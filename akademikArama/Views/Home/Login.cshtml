@@ -1,7 +1,7 @@
 ﻿@using akademikArama.Models
 @model Kullanici
 @{
-    ViewBag.Title = "Login";
+    ViewBag.Title = "Giriş Yap";
 }
 
 <h2>Login</h2>
@@ -10,7 +10,7 @@
     @using (Html.BeginForm("Login", "Home", FormMethod.Post, new { @class = "form-horizontal" }))
     {
         <div class="form-group">
-            @Html.TextBoxFor(m => m.EMail, new { placeholder="E-MAİL", @class = "form-control" })
+            @Html.TextBoxFor(m => m.EMail, new { placeholder = "E-MAİL", @class = "form-control" })
         </div>
         <div class="form-group">
             @Html.PasswordFor(m => m.Password, new { placeholder = "ŞİFRE", @class = "form-control" })
