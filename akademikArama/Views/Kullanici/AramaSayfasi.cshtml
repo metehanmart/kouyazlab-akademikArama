@@ -1,0 +1,65 @@
+﻿@model IEnumerable<akademikArama.Models.AramaSayfasiModel>
+@{
+    ViewBag.Title = "AramaSayfasi";
+}
+<!--
+iki textbox biri eser diğeri ortak çalıştığı kişiler
+-->
+<h2>AramaSayfasi</h2>
+<div class="ortala">
+    @using (Html.BeginForm("AramaSayfasi", "Kullanici", FormMethod.Post))
+    {
+
+        @Html.TextBox("AranacakArastirmaci", "", new { placeholder = "Aranacak Araştırmacı" })
+        @Html.TextBox("AranacakEser", "", new { placeholder = "Aranacak Eser" })
+        <input type="submit" value="Arama" />
+    }
+</div>
+
+
+
+<div class="tablo" id="arastirmacininCalistigiKisiler">
+    <table class="table table-striped">
+        <caption>Ortak Projede Çalışılan Araştırmacıların ve Çalışan Projenin Bilgişeri</caption>
+        <thead>
+            <tr>
+                <th>Arastırmac ID</th>
+                <th>Arastırmacı Adı</th>
+                <th>Arastırmacı Soyadı</th>
+                <th>Yayın Adı</th>
+                <th>Yayın Yılı</th>
+                <th>Yayın Turu</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @if (Model.Count() == 0)
+            {
+                <tr>
+                    <td> Kayıt Yok</td>
+                </tr>
+            }
+            else
+            {
+                foreach (var i in Model)
+                {
+                    <tr>
+                        <td> @i.ArastirmaciID</td>
+                        <td> @i.ArastirmaciAdi</td>
+                        <td> @i.ArasirmaciSoyadi</td>
+                        <td> @i.YayinAdi</td>
+                        <td> @i.YayinYili</td>
+                        <td> @i.YayinTuru</td>
+                    </tr>
+                }
+
+            }
+        </tbody>
+    </table>
+
+</div>
+
+<div class="tablo" id="yayinTablo">
+
+</div>
+

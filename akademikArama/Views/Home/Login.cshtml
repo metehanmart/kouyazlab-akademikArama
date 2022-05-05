@@ -1,0 +1,23 @@
+﻿@using akademikArama.Models
+@model Kullanici
+@{
+    ViewBag.Title = "Login";
+}
+
+<h2>Login</h2>
+
+<div>
+    @using (Html.BeginForm("Login", "Home", FormMethod.Post, new { @class = "form-horizontal" }))
+    {
+        <div class="form-group">
+            @Html.TextBoxFor(m => m.EMail, new { placeholder="E-MAİL", @class = "form-control" })
+        </div>
+        <div class="form-group">
+            @Html.PasswordFor(m => m.Password, new { placeholder = "ŞİFRE", @class = "form-control" })
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Giriş Yap" id="Submit" class="btn btn-default" />
+        </div>
+
+    }
+</div>
