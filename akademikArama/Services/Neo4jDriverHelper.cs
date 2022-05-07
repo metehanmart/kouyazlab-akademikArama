@@ -75,6 +75,7 @@ namespace akademikArama.Services
                 foreach (var result in readResults)
                 {
                     ArastirmaciModel tmp = new ArastirmaciModel();
+
                     var Node = result["p"].As<INode>();
                     tmp.ArastirmaciID = Node["ArastirmaciID"].As<Int32>();
                     tmp.ArastirmaciAdi = Node["ArastirmaciAdi"].As<String>();
