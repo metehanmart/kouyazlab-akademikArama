@@ -59,10 +59,10 @@ namespace akademikArama.Services
         //    }
         //}
 
-        public List<ArastirmaciModel> FindArastirmaci(string aranacakAd)
+        public List<AramaSayfasiModel> FindArastirmaci(string aranacakAd)
         {
-            List<ArastirmaciModel> list = new List<ArastirmaciModel>();
-            var query = $" MATCH (p:ARASTIRMACI) WHERE p.ArastirmaciAdi = '{aranacakAd}' RETURN p";
+            List<AramaSayfasiModel> list = new List<AramaSayfasiModel>();
+            var query = "MATCH (p:ARASTIRMACI{ArastirmaciAdi:'" + aranacakAd + "'})-->(y:YAYIN) RETURN y,p;";
             var session = _driver.Session();
             try
             {
@@ -74,12 +74,15 @@ namespace akademikArama.Services
 
                 foreach (var result in readResults)
                 {
-                    ArastirmaciModel tmp = new ArastirmaciModel();
-
+                    AramaSayfasiModel tmp = new AramaSayfasiModel();
                     var Node = result["p"].As<INode>();
+                    var Node2 = result["y"].As<INode>();
                     tmp.ArastirmaciID = Node["ArastirmaciID"].As<Int32>();
                     tmp.ArastirmaciAdi = Node["ArastirmaciAdi"].As<String>();
                     tmp.ArasirmaciSoyadi = Node["ArastirmaciSoyadi"].As<String>();
+                    tmp.YayinAdi = Node2["YayinAdi"].As<String>();
+                    tmp.YayinYili = Node2["YayinYili"].As<Int32>();
+                    tmp.YayinTuru = Node2["YayinTuru"].As<String>();
                     list.Add(tmp);
                 }
             }
