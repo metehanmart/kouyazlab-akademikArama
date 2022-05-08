@@ -62,7 +62,7 @@ namespace akademikArama.Services
         public List<AramaSayfasiModel> FindArastirmaci(string aranacakAd)
         {
             List<AramaSayfasiModel> list = new List<AramaSayfasiModel>();
-            var query = "MATCH (p:ARASTIRMACI{ArastirmaciAdi:'" + aranacakAd + "'})-->(y:YAYIN) RETURN y,p;";
+            var query = "MATCH (a:ARASTIRMACI)<--(p:ARASTIRMACI{ArastirmaciAdi:'" + aranacakAd + "'})-->(y:YAYIN)-->(t:YAYINTURU) RETURN a,y,p,t;";
             var session = _driver.Session();
             try
             {
@@ -77,12 +77,15 @@ namespace akademikArama.Services
                     AramaSayfasiModel tmp = new AramaSayfasiModel();
                     var Node = result["p"].As<INode>();
                     var Node2 = result["y"].As<INode>();
+                    var Node3 = result["a"].As<INode>();
+                    var Node4 = result["t"].As<INode>();
                     tmp.ArastirmaciID = Node["ArastirmaciID"].As<Int32>();
                     tmp.ArastirmaciAdi = Node["ArastirmaciAdi"].As<String>();
                     tmp.ArasirmaciSoyadi = Node["ArastirmaciSoyadi"].As<String>();
                     tmp.YayinAdi = Node2["YayinAdi"].As<String>();
                     tmp.YayinYili = Node2["YayinYili"].As<Int32>();
-                    tmp.YayinTuru = Node2["YayinTuru"].As<String>();
+                    tmp.YayinTuru = Node4["YayinTuru"].As<String>();
+                    tmp.CalistigiKisiler = Node3["ArastirmaciAdi"].As<String>() + " " + Node3["ArastirmaciSoyadi"].As<String>();
                     list.Add(tmp);
                 }
             }

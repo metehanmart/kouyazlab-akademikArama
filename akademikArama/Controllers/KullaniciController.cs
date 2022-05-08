@@ -39,6 +39,7 @@ namespace akademikArama.Controllers
                     model.YayinAdi = i.YayinAdi;
                     model.YayinYili = i.YayinYili;
                     model.YayinTuru = i.YayinTuru;
+                    model.CalistigiKisiler = i.CalistigiKisiler;
                     modelList.Add(model);
                 }
                 return View(modelList);

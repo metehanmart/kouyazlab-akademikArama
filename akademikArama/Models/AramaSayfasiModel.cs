@@ -13,5 +13,6 @@ namespace akademikArama.Models
         public string YayinAdi { get; set; }
         public int YayinYili { get; set; }
         public string YayinTuru { get; set; }
+        public string CalistigiKisiler { get; set; }
     }
 }
