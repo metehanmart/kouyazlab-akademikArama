@@ -146,6 +146,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\VeriGirModel.cs" />
     <Compile Include="Models\AramaSayfasiModel.cs" />
     <Compile Include="Models\ArastirmaciModel.cs" />
     <Compile Include="Models\EserModel.cs" />
