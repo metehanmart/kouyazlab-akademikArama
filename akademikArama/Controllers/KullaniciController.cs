@@ -46,6 +46,9 @@ namespace akademikArama.Controllers
             return View();
         }
 
-
+        public ActionResult GrafikArastirmaci()
+        {
+            return View();
+        }
     }
 }
