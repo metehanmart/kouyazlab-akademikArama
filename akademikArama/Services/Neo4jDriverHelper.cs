@@ -68,8 +68,9 @@ namespace akademikArama.Services
             string[] adsoyad = aranacakAd.Split(' ');
             for (int i = 0; i < aranacakAd.Split(' ').Length - 1; i++)
             {
-                aranacakIsim += adsoyad[i];
+                aranacakIsim += adsoyad[i] + " ";
             }
+            aranacakIsim = aranacakIsim.Substring(0, aranacakIsim.Length - 1);
             aranacakSoyisim = adsoyad[aranacakAd.Split(' ').Length - 1];
 
 
