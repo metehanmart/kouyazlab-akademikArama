@@ -46,7 +46,9 @@ iki textbox biri eser diğeri ortak çalıştığı kişiler
                 {
                     <tr>
                         <td> @i.ArastirmaciID</td>
-                        <td> @i.ArastirmaciAdi</td>
+                        <td>
+                            @Html.ActionLink(i.ArastirmaciAdi, "GrafikArastirmaci", "Kullanici", new { }, new { target = "_blank" })
+                        </td>
                         <td> @i.ArasirmaciSoyadi</td>
                         <td> @i.YayinAdi</td>
                         <td> @i.YayinYili</td>

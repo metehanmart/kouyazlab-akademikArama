@@ -1,0 +1,50 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title> Hadee </title>
+    <style type="text/css">
+        #viz {
+            width: 900px;
+            height: 700px;
+        }
+    </style>
+
+    <script src="https://cdn.neo4jlabs.com/neovis.js/v1.5.0/neovis.js"></script>
+    <script>
+        function draw() {
+
+            var config = {
+                container_id: "viz",
+                server_url: "bolt://3.231.33.56:7687",
+                server_user: "neo4j",
+                server_password: "straws-twin-skin",
+
+                labels: {
+
+                },
+                relationships: {
+                    "YAYINLANDI": {
+                        caption: false,
+
+                    }
+                },
+                initial_cypher: "MATCH p = (a)-[r]->(b) RETURN *"
+            }
+            var viz = new NeoVis.default(config);
+            viz.render();
+        }
+    </script>
+</head>
+
+<body onload="draw()">
+
+    <div id="viz"></div>
+
+</body>
+</html>
