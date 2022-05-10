@@ -5,7 +5,7 @@ using System.Web;
 
 namespace akademikArama.Models
 {
-    public class AramaSayfasiModel
+    public class EklemeSayfasiModel
     {
         public int ArastirmaciID { get; set; }
         public string ArastirmaciAdi { get; set; }

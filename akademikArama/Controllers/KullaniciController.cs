@@ -28,13 +28,17 @@ namespace akademikArama.Controllers
             Neo4jDriverHelper helper = new Neo4jDriverHelper(MyConstants.Uri, MyConstants.UserName, MyConstants.Password);
             if (AranacakArastirmaci != null || AranacakArastirmaci != "")
             {
-                List<ArastirmaciModel> arastirmaciList = helper.FindArastirmaci(AranacakArastirmaci);
+                List<AramaSayfasiModel> arastirmaciList = helper.FindArastirmaci(AranacakArastirmaci);
                 foreach (var i in arastirmaciList)
                 {
                     AramaSayfasiModel model = new AramaSayfasiModel();
                     model.ArastirmaciID = i.ArastirmaciID;
                     model.ArastirmaciAdi = i.ArastirmaciAdi;
                     model.ArasirmaciSoyadi = i.ArasirmaciSoyadi;
+                    model.YayinAdi = i.YayinAdi;
+                    model.YayinYili = i.YayinYili;
+                    model.YayinTuru = i.YayinTuru;
+                    model.CalistigiKisiler = i.CalistigiKisiler;
                     modelList.Add(model);
                 }
                 return View(modelList);

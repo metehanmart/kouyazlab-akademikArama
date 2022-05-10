@@ -146,6 +146,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\EklemeSayfasiModel.cs" />
     <Compile Include="Models\VeriGirModel.cs" />
     <Compile Include="Models\AramaSayfasiModel.cs" />
     <Compile Include="Models\ArastirmaciModel.cs" />
@@ -191,11 +192,11 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\Login.cshtml" />
     <Content Include="Views\Kullanici\AramaSayfasi.cshtml" />
+    <Content Include="Views\Admin\EklemeSayfasi.cshtml" />
     <Content Include="Views\Kullanici\GrafikArastirmaci.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Admin\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
