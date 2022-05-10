@@ -5,11 +5,13 @@ using System.Web;
 using Neo4j.Driver;
 using System.Threading.Tasks;
 using akademikArama.Models;
+using System.Text.RegularExpressions;
+
 namespace akademikArama.Services
 {
     public class Neo4jDriverHelper : IDisposable
     {
-        //selam
+        //selam as
         private bool _disposed = false;
         private readonly IDriver _driver;
 
@@ -59,10 +61,22 @@ namespace akademikArama.Services
         //    }
         //}
 
-        public List<ArastirmaciModel> FindArastirmaci(string aranacakAd)
+        public List<AramaSayfasiModel> FindArastirmaci(string aranacakAd)
         {
-            List<ArastirmaciModel> list = new List<ArastirmaciModel>();
-            var query = $" MATCH (p:ARASTIRMACI) WHERE p.ArastirmaciAdi = '{aranacakAd}' RETURN p";
+
+            string aranacakIsim = "", aranacakSoyisim = "";
+            string[] adsoyad = aranacakAd.Split(' ');
+            for (int i = 0; i < aranacakAd.Split(' ').Length - 1; i++)
+            {
+                aranacakIsim += adsoyad[i] + " ";
+            }
+            aranacakIsim = aranacakIsim.Substring(0, aranacakIsim.Length - 1);
+            aranacakSoyisim = adsoyad[aranacakAd.Split(' ').Length - 1];
+
+
+            List<AramaSayfasiModel> list = new List<AramaSayfasiModel>();
+            var query = "MATCH (a:ARASTIRMACI)<--(p:ARASTIRMACI)-->(y:YAYIN)-->(t:YAYINTURU)  WHERE p.ArastirmaciAdi = '" + aranacakIsim + "' AND p.ArastirmaciSoyadi = '" + aranacakSoyisim + "'RETURN a,y,p,t;";
+            System.Diagnostics.Debug.WriteLine(query);
             var session = _driver.Session();
             try
             {
@@ -74,12 +88,18 @@ namespace akademikArama.Services
 
                 foreach (var result in readResults)
                 {
-                    ArastirmaciModel tmp = new ArastirmaciModel();
-
+                    AramaSayfasiModel tmp = new AramaSayfasiModel();
                     var Node = result["p"].As<INode>();
+                    var Node2 = result["y"].As<INode>();
+                    var Node3 = result["a"].As<INode>();
+                    var Node4 = result["t"].As<INode>();
                     tmp.ArastirmaciID = Node["ArastirmaciID"].As<Int32>();
                     tmp.ArastirmaciAdi = Node["ArastirmaciAdi"].As<String>();
                     tmp.ArasirmaciSoyadi = Node["ArastirmaciSoyadi"].As<String>();
+                    tmp.YayinAdi = Node2["YayinAdi"].As<String>();
+                    tmp.YayinYili = Node2["YayinYili"].As<Int32>();
+                    tmp.YayinTuru = Node4["YayinTuru"].As<String>();
+                    tmp.CalistigiKisiler = Node3["ArastirmaciAdi"].As<String>() + " " + Node3["ArastirmaciSoyadi"].As<String>();
                     list.Add(tmp);
                 }
             }
