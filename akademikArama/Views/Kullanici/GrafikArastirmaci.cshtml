@@ -15,17 +15,16 @@
         }
     </style>
 
-    <script src="https://cdn.rawgit.com/neo4j-contrib/neovis.js/master/dist/neovis.js"></script>
-
+    <script src="https://cdn.neo4jlabs.com/neovis.js/v1.5.0/neovis.js"></script>
     <script>
         function draw() {
-            var socket = new WebSocket("bolt+s://36ec63927d89f9d8a94188ab036a1257.neo4jsandbox.com:7687");
-            socket.OPEN;
+
             var config = {
                 container_id: "viz",
-                server_url: socket.url,
+                server_url: "bolt://3.231.33.56:7687",
                 server_user: "neo4j",
                 server_password: "straws-twin-skin",
+
                 labels: {
 
                 },
@@ -46,5 +45,6 @@
 <body onload="draw()">
 
     <div id="viz"></div>
+
 </body>
 </html>
