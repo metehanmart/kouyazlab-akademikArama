@@ -5,6 +5,19 @@
 
 <h2>EklemeSayfasi</h2>
 
-<div>
-    <p1>sa</p1>
+<div class="ortala">
+    @using (Html.BeginForm("EklemeSayfasi", "Admin", FormMethod.Post))
+    {
+        @Html.TextBox("ArastirmaciID", "", new { placeholder = "Arastirmaci ID" })
+        @Html.TextBox("ArastirmaciAdi", "", new { placeholder = "Araştırmacı Adı" })
+        @Html.TextBox("ArasirmaciSoyadi", "", new { placeholder = "Araştırmacı Soyadı" })
+        @Html.TextBox("YayinAdi", "", new { placeholder = "Yayın Adı" })
+        @Html.TextBox("YayinYili", "", new { placeholder = "Yayın Yılı" })
+        @Html.TextBox("YayinTuru", "", new { placeholder = "Yayın Türü" })
+        <input type="submit" value="Ekle" />
+    }
+</div>
+
+<div class="ortala">
+
 </div>

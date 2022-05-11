@@ -70,6 +70,7 @@ namespace akademikArama.Services
             {
                 aranacakIsim += adsoyad[i] + " ";
             }
+            //burada sıkıntı var bakmak lazım Alev yazdım hata verdi soyad olmayınca patlıyor
             aranacakIsim = aranacakIsim.Substring(0, aranacakIsim.Length - 1);
             aranacakSoyisim = adsoyad[aranacakAd.Split(' ').Length - 1];
 
