@@ -70,8 +70,11 @@ namespace akademikArama.Services
             {
                 aranacakIsim += adsoyad[i] + " ";
             }
-            aranacakIsim = aranacakIsim.Substring(0, aranacakIsim.Length - 1);
-            aranacakSoyisim = adsoyad[aranacakAd.Split(' ').Length - 1];
+            if (aranacakAd.Split(' ').Length > 1)
+            {
+                aranacakIsim = aranacakIsim.Substring(0, aranacakIsim.Length - 1);
+                aranacakSoyisim = adsoyad[aranacakAd.Split(' ').Length - 1];
+            }
 
 
             List<AramaSayfasiModel> list = new List<AramaSayfasiModel>();
