@@ -18,6 +18,41 @@
     }
 </div>
 
-<div class="ortala">
+<div class="tablo" , id="arastirmacilarListesi">
+    <table class="table table-striped">
+        <caption>Arastırmacılar Listesi</caption>
+        <thead>
+            <tr>
+                <th>Arastırmacı ID</th>
+                <th>Arastırmacı Adı</th>
+                <th>Arastırmacı Soyadı</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Count() == 0)
+            {
+                <tr>
+                    <td>Kayıt Yok</td>
+                </tr>
+            }
+            else
+            {
+                foreach (var i in Model)
+                {
+                    <tr>
+                        <td>@i.ArastirmaciID</td>
+                        <td>@i.ArastirmaciAdi</td>
+                        <td>@i.ArasirmaciSoyadi</td>
+                    </tr>
+                }
+            }
+            @if (ViewBag.Message != null)
+            {
+                <tr>
+                    <td>@ViewBag.Message</td>
+                </tr>
+            }
+        </tbody>
 
+    </table>
 </div>

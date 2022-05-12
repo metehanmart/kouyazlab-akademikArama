@@ -61,6 +61,39 @@ namespace akademikArama.Services
         //    }
         //}
 
+        public List<EklemeSayfasiModel> HepsiniGetir()
+        {
+            List<EklemeSayfasiModel> list = new List<EklemeSayfasiModel>();
+            string query = "MATCH (n:ARASTIRMACI) return n";
+            var session = _driver.Session();
+            try
+            {
+                var readResults = session.ReadTransaction(tx =>
+                {
+                    var result = tx.Run(query);
+                    return (result.ToList());
+                });
+
+                foreach (var result in readResults)
+                {
+                    EklemeSayfasiModel tmp = new EklemeSayfasiModel();
+                    var Node = result["n"].As<INode>();
+
+                    tmp.ArastirmaciID = Node["ArastirmaciID"].As<Int32>();
+                    tmp.ArastirmaciAdi = Node["ArastirmaciAdi"].As<String>();
+                    tmp.ArasirmaciSoyadi = Node["ArastirmaciSoyadi"].As<String>();
+
+                    list.Add(tmp);
+                }
+            }
+            catch (Neo4jException ex)
+            {
+                Console.WriteLine($"{query} - {ex}");
+                throw;
+            }
+            return list;
+        }
+
         public List<AramaSayfasiModel> FindArastirmaci(string aranacakAd)
         {
 
@@ -112,6 +145,44 @@ namespace akademikArama.Services
             return list;
         }
 
+        public bool ArastirmaciEkleme(EklemeSayfasiModel eklemeSayfasiModel)
+        {
+            bool status = true;
+            string nodeName = eklemeSayfasiModel.ArastirmaciAdi + eklemeSayfasiModel.ArasirmaciSoyadi;
+            string query = $"CREATE({nodeName}:ARASTIRMACI{{ArastirmaciID:{eklemeSayfasiModel.ArastirmaciID},ArastirmaciAdi:'{eklemeSayfasiModel.ArastirmaciAdi}',ArastirmaciSoyadi:'{eklemeSayfasiModel.ArasirmaciSoyadi}'}}) RETURN {nodeName}";
+            System.Diagnostics.Debug.WriteLine("query = " + query);
+            List<EklemeSayfasiModel> list = new List<EklemeSayfasiModel>();
+            using (var session = _driver.Session())
+            {
+                try
+                {
+                    var ekle = session.WriteTransaction(tx =>
+                    {
+                        var result = tx.Run(query, new { eklemeSayfasiModel.ArastirmaciAdi });
+                        return result;
+                    });
+                }
+                catch (Exception ex)
+                {
+                    status = false;
+                }
+
+            }
+            return status;
+        }
+
+        public void EserleArastirmaciyiBagla(EklemeSayfasiModel eklemeSayfasiModel)
+        {
+            // Burda turude baglamak lazım
+            /**
+             *  Ilk once Arastırmaci var mı kontrol yoksa arastırmacı olussun sonra eser var mı kontrol yoksa
+             *  eser oluşsun sonra eserle arastirmaciyi baglama en son o esere kendisinden baska kim katkı yaptıysa
+             *  o kisi ile ortak işte çalışma bağı
+             */
+
+
+
+        }
         public void Dispose()
         {
             Dispose(true);
