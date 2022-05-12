@@ -11,8 +11,10 @@
         @Html.TextBox("ArastirmaciID", "", new { placeholder = "Arastirmaci ID" })
         @Html.TextBox("ArastirmaciAdi", "", new { placeholder = "Araştırmacı Adı" })
         @Html.TextBox("ArasirmaciSoyadi", "", new { placeholder = "Araştırmacı Soyadı" })
+        @Html.TextBox("YayinID", "", new { placeholder = "Yayın ID" })
         @Html.TextBox("YayinAdi", "", new { placeholder = "Yayın Adı" })
         @Html.TextBox("YayinYili", "", new { placeholder = "Yayın Yılı" })
+        @Html.TextBox("YayınTuruID", "", new { placeholder = "Yayın Turu ID" })
         @Html.TextBox("YayinTuru", "", new { placeholder = "Yayın Türü" })
         <input type="submit" value="Ekle" />
     }
@@ -39,11 +41,14 @@
             {
                 foreach (var i in Model)
                 {
-                    <tr>
-                        <td>@i.ArastirmaciID</td>
-                        <td>@i.ArastirmaciAdi</td>
-                        <td>@i.ArasirmaciSoyadi</td>
-                    </tr>
+                    if (i.ArastirmaciID != 0)
+                    {
+                        <tr>
+                            <td>@i.ArastirmaciID</td>
+                            <td>@i.ArastirmaciAdi</td>
+                            <td>@i.ArasirmaciSoyadi</td>
+                        </tr>
+                    }
                 }
             }
             @if (ViewBag.Message != null)
@@ -52,6 +57,51 @@
                     <td>@ViewBag.Message</td>
                 </tr>
             }
+        </tbody>
+
+    </table>
+</div>
+
+<div class="tablo" id="yayinlarListesi">
+    <table class="table table-striped">
+        <caption>Yayınlar Listesi</caption>
+        <thead>
+            <tr>
+                <th>Yayın ID</th>
+                <th>Yayın Adı</th>
+                <th>Yayın Yılı</th>
+                <th>Yayın Turu ID</th>
+                <th>Yayın Türü</th>
+                <th>Yayın Yeri</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Count() == 0)
+            {
+                <tr>
+                    <td>Kayıt Yok</td>
+                </tr>
+            }
+            else
+            {
+                foreach (var i in Model)
+                {
+
+                    if (i.YayinAdi != "" && i.YayinID != 0)
+                    {
+                        <tr>
+                            <td>@i.YayinID</td>
+                            <td>@i.YayinAdi</td>
+                            <td>@i.YayinYili</td>
+                            <td>@i.YayinTuruID</td>
+                            <td>@i.YayinTuru</td>
+                            <td>@i.YayinYeri</td>
+                        </tr>
+                    }
+
+                }
+            }
+
         </tbody>
 
     </table>

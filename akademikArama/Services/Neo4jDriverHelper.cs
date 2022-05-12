@@ -94,6 +94,45 @@ namespace akademikArama.Services
             return list;
         }
 
+        public List<EklemeSayfasiModel> EserleriGetir()
+        {
+            List<EklemeSayfasiModel> list = new List<EklemeSayfasiModel>();
+
+            string query = $"MATCH(y:YAYIN)-->(t:YAYINTURU) RETURN y,t;";
+            System.Diagnostics.Debug.WriteLine(query);
+            var session = _driver.Session();
+            try
+            {
+                var readResults = session.ReadTransaction(tx =>
+                {
+                    var result = tx.Run(query);
+                    return (result.ToList());
+                });
+                foreach (var result in readResults)
+                {
+                    EklemeSayfasiModel tmp = new EklemeSayfasiModel();
+                    var node1 = result["y"].As<INode>();
+                    var node2 = result["t"].As<INode>();
+
+                    tmp.YayinAdi = node1["YayinAdi"].As<String>();
+                    tmp.YayinYili = node1["YayinYili"].As<Int32>();
+                    tmp.YayinID = node1["YayinID"].As<Int32>();
+                    tmp.YayinYeri = node2["YayinYeri"].As<String>();
+                    tmp.YayinTuru = node2["YayinTuru"].As<String>();
+                    tmp.YayinTuruID = node2["YayinTuruID"].As<Int32>();
+                    //System.Diagnostics.Debug.WriteLine("hadee " + tmp.YayinYeri);
+                    list.Add(tmp);
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine("hata ====" + ex);
+            }
+
+
+            return list;
+        }
+
         public List<AramaSayfasiModel> FindArastirmaci(string aranacakAd)
         {
 
@@ -165,6 +204,7 @@ namespace akademikArama.Services
                 catch (Exception ex)
                 {
                     status = false;
+                    System.Diagnostics.Debug.WriteLine("hata" + ex);
                 }
 
             }
@@ -179,9 +219,23 @@ namespace akademikArama.Services
              *  eser oluşsun sonra eserle arastirmaciyi baglama en son o esere kendisinden baska kim katkı yaptıysa
              *  o kisi ile ortak işte çalışma bağı
              */
+            string query = $"MATCH (n:ARASTIRMACI{{ArastirmaciID:{eklemeSayfasiModel.ArastirmaciID}}}) RETURN n";
+            var session = _driver.Session();
+            var readResults = session.ReadTransaction(tx =>
+            {
+                var result = tx.Run(query);
+                return (result.ToList());
+            });
+            // arastirmaci yoksa
+            if (readResults.Count == 0)
+            {
 
+            }
+            //arastirmaci varsa
+            else
+            {
 
-
+            }
         }
         public void Dispose()
         {

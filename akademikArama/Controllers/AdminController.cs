@@ -17,10 +17,13 @@ namespace akademikArama.Controllers
         [HttpGet]
         public ActionResult EklemeSayfasi(int? id)
         {
+            System.Diagnostics.Debug.WriteLine("ekleme bas");
             List<EklemeSayfasiModel> modelList = new List<EklemeSayfasiModel>();
             Neo4jDriverHelper helper = new Neo4jDriverHelper(MyConstants.Uri, MyConstants.UserName, MyConstants.Password);
             modelList = helper.HepsiniGetir();
-
+            List<EklemeSayfasiModel> tmplist = helper.EserleriGetir();
+            modelList.AddRange(tmplist);
+            System.Diagnostics.Debug.WriteLine("ekleme son");
             return View(modelList);
         }
         [HttpPost]
@@ -56,6 +59,7 @@ namespace akademikArama.Controllers
                 System.Diagnostics.Debug.WriteLine("admincontroller eklemesayfasi actionresulttaki else dustum");
             }
             modelList = neo4JDriverHelper.HepsiniGetir();
+            modelList.AddRange(neo4JDriverHelper.EserleriGetir());
             return View(modelList);
         }
 
