@@ -1,4 +1,4 @@
-﻿
+﻿@model IEnumerable<akademikArama.Models.ArastirmaciModel>
 @{
     Layout = null;
 }
@@ -6,6 +6,7 @@
 <!DOCTYPE html>
 
 <html>
+
 <head>
     <title> Hadee </title>
     <style type="text/css">
@@ -14,11 +15,10 @@
             height: 700px;
         }
     </style>
-
     <script src="https://cdn.neo4jlabs.com/neovis.js/v1.5.0/neovis.js"></script>
     <script>
-        function draw() {
 
+        function draw() {
             var config = {
                 container_id: "viz",
                 server_url: "bolt://3.231.33.56:7687",
@@ -26,12 +26,19 @@
                 server_password: "straws-twin-skin",
 
                 labels: {
-
+                    "ARASTIRMACI": {
+                        "caption": 'ArastirmaciAdi'
+                    },
+                    "YAYINTURU": {
+                        "caption": 'YayinTuru'
+                    },
+                    "YAYIN": {
+                        "caption": 'YayinYili'
+                    }
                 },
                 relationships: {
                     "YAYINLANDI": {
-                        caption: false,
-
+                        caption: false
                     }
                 },
                 initial_cypher: "MATCH p = (a)-[r]->(b) RETURN *"

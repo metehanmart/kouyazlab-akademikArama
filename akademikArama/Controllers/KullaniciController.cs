@@ -48,10 +48,15 @@ namespace akademikArama.Controllers
             //    helper.FindArastirmaci(AranacakArastirmaci);
             return View();
         }
-
         public ActionResult GrafikArastirmaci()
         {
             return View();
+        }
+        public JsonResult Gecis()
+        {
+            var degisken = "ekmek";
+
+            return Json(degisken);
         }
     }
 }
