@@ -40,7 +40,7 @@ namespace akademikArama.Controllers
              * Eser zaten arastirmaci ile iliskiliyse bir şey yapma
              * **/
             bool status = true;
-            if (eklemeSayfasiModel.ArastirmaciAdi != "" && eklemeSayfasiModel.ArasirmaciSoyadi != "" && eklemeSayfasiModel.ArastirmaciID != 0)
+            if (eklemeSayfasiModel.ArastirmaciID != 0 && eklemeSayfasiModel.YayinID == 0 && eklemeSayfasiModel.YayinTuruID == 0)
             {
                 status = neo4JDriverHelper.ArastirmaciEkleme(eklemeSayfasiModel);
                 if (!status)
@@ -49,7 +49,7 @@ namespace akademikArama.Controllers
                 }
 
             }
-            else if (eklemeSayfasiModel.ArastirmaciAdi != "" && eklemeSayfasiModel.ArasirmaciSoyadi != "" && eklemeSayfasiModel.YayinAdi != "" && eklemeSayfasiModel.YayinYili != 0 && eklemeSayfasiModel.YayinTuru != "")
+            else if (eklemeSayfasiModel.ArastirmaciID != 0 && eklemeSayfasiModel.YayinID != 0 && eklemeSayfasiModel.YayinTuruID != 0)
             {
                 neo4JDriverHelper.EserleArastirmaciyiBagla(eklemeSayfasiModel);
             }

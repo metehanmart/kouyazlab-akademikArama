@@ -229,12 +229,182 @@ namespace akademikArama.Services
             // arastirmaci yoksa
             if (readResults.Count == 0)
             {
+                // eser var mi
+                query = $"MATCH(y:YAYIN{{YayinID:{eklemeSayfasiModel.YayinID}}}) RETURN y";
+                var readResult2 = session.ReadTransaction(tx =>
+                {
+                    var result = tx.Run(query);
+                    return (result.ToList());
+                });
+                //eser yok
+                if (readResult2.Count == 0)
+                {
+                    query = $"MATCH(t:YAYINTURU{{YayinTuruID:{eklemeSayfasiModel.YayinTuruID}}}) RETURN t";
+                    var readResult3 = session.ReadTransaction(tx =>
+                    {
+                        var result = tx.Run(query);
+                        return (result.ToList());
+                    });
+                    //tür yok hepsini oluştur bagla
+                    if (readResult3.Count() == 0)
+                    {
+                        string nodeName = eklemeSayfasiModel.ArastirmaciAdi + eklemeSayfasiModel.ArasirmaciSoyadi;
+                        query = $"CREATE({nodeName}:ARASTIRMACI{{ArastirmaciID:{eklemeSayfasiModel.ArastirmaciID},ArastirmaciAdi:'{eklemeSayfasiModel.ArastirmaciAdi}',ArastirmaciSoyadi:'{eklemeSayfasiModel.ArasirmaciSoyadi}'}}) RETURN {nodeName}";
+                        var ekle = session.WriteTransaction(tx =>
+                        {
+                            var result = tx.Run(query);
+                            return result;
+                        });
 
+                        query = $"CREATE(y:YAYIN{{YayinID:{eklemeSayfasiModel.YayinID},YayinAdi:'{eklemeSayfasiModel.YayinAdi}',YayinYili:{eklemeSayfasiModel.YayinYili}}}) RETURN y";
+
+                        var ekle2 = session.WriteTransaction(tx =>
+                        {
+                            var result = tx.Run(query);
+                            return result;
+                        });
+
+                        query = $"CREATE(t:YAYINTURU{{YayinTuruID:{eklemeSayfasiModel.YayinTuruID},YayinTuru:'{eklemeSayfasiModel.YayinTuru}',YayinYeri:'{eklemeSayfasiModel.YayinYeri}'}}) RETURN t";
+
+                        var ekle3 = session.WriteTransaction(tx =>
+                        {
+                            var result = tx.Run(query);
+                            return result;
+                        });
+
+                        query = $"MATCH(a:ARASTIRMACI{{ArastirmaciID:{eklemeSayfasiModel.ArastirmaciID}}}),(y:YAYIN{{YayinID:{eklemeSayfasiModel.YayinID}}}) CREATE (a)-[:YAYINLADI]->(y)";
+                        System.Diagnostics.Debug.WriteLine("query ==  " + query);
+                        var birlestir = session.WriteTransaction(tx =>
+                        {
+                            var result = tx.Run(query);
+                            return result;
+                        });
+
+                        query = $"MATCH(y:YAYIN{{YayinID:{eklemeSayfasiModel.YayinID}}}),(t:YAYINTURU{{YayinTuruID:{eklemeSayfasiModel.YayinTuruID}}}) CREATE (y)-[:TURU]->(t)";
+                        System.Diagnostics.Debug.WriteLine("query ==  " + query);
+                        var birlestir2 = session.WriteTransaction(tx =>
+                        {
+                            var result = tx.Run(query);
+                            return result;
+                        });
+                    }
+                    //tür var arastirmaci ve eser yok
+                    else
+                    {
+                        string nodeName = eklemeSayfasiModel.ArastirmaciAdi + eklemeSayfasiModel.ArasirmaciSoyadi;
+                        query = $"CREATE({nodeName}:ARASTIRMACI{{ArastirmaciID:{eklemeSayfasiModel.ArastirmaciID},ArastirmaciAdi:'{eklemeSayfasiModel.ArastirmaciAdi}',ArastirmaciSoyadi:'{eklemeSayfasiModel.ArasirmaciSoyadi}'}}) RETURN {nodeName}";
+                        var ekle = session.WriteTransaction(tx =>
+                        {
+                            var result = tx.Run(query);
+                            return result;
+                        });
+
+                        query = $"CREATE(y:YAYIN{{YayinID:{eklemeSayfasiModel.YayinID},YayinAdi:'{eklemeSayfasiModel.YayinAdi}',YayinYili:{eklemeSayfasiModel.YayinYili}}}) RETURN y";
+
+                        var ekle2 = session.WriteTransaction(tx =>
+                        {
+                            var result = tx.Run(query);
+                            return result;
+                        });
+
+                        query = $"MATCH(a:ARASTIRMACI{{ArastirmaciID:{eklemeSayfasiModel.ArastirmaciID}}}),(y:YAYIN{{YayinID:{eklemeSayfasiModel.YayinID}}}),(t:YAYINTURU{{YayinID:{eklemeSayfasiModel.YayinTuruID}}}) CREATE (a)-[:YAYINLADI]->(y)-[:TURU]->(t)";
+                        var birlestir = session.WriteTransaction(tx =>
+                        {
+                            var result = tx.Run(query);
+                            return result;
+                        });
+                    }
+                }
+                //arastirmaci yok eser var eser varsa ortak çalışan olacak burda
+                else
+                {
+
+                    string nodeName = eklemeSayfasiModel.ArastirmaciAdi + eklemeSayfasiModel.ArasirmaciSoyadi;
+                    query = $"CREATE({nodeName}:ARASTIRMACI{{ArastirmaciID:{eklemeSayfasiModel.ArastirmaciID},ArastirmaciAdi:'{eklemeSayfasiModel.ArastirmaciAdi}',ArastirmaciSoyadi:'{eklemeSayfasiModel.ArasirmaciSoyadi}'}}) RETURN {nodeName}";
+                    var ekle = session.WriteTransaction(tx =>
+                    {
+                        var result = tx.Run(query);
+                        return result;
+                    });
+                    query = $"MATCH(a:ARASTIRMACI{{ArastirmaciID:{eklemeSayfasiModel.ArastirmaciID}}}),(y:YAYIN{{YayinID:{eklemeSayfasiModel.YayinID}}}),(t:YAYINTURU{{YayinID:{eklemeSayfasiModel.YayinTuruID}}}) CREATE (a)-[:YAYINLADI]->(y)-[:TURU]->(t)";
+                    var birlestir = session.WriteTransaction(tx =>
+                    {
+                        var result = tx.Run(query);
+                        return result;
+                    });
+
+                    query = $"MATCH(y:YAYIN{{YayinID:{eklemeSayfasiModel.YayinID}}}),(a:ARASTIRMACI),(a)-[:YAYINLADI]->(y),(b:ARASTIRMACI) WHERE NOT (a)-[:ORTAKPROJE]->(b:ARASTIRMACI) and (b)-[:ORTAKPROJE]->(a:ARASTIRMACI) CREATE (a)-[:ORTAKPROJE]->(b:ARASTIRMACI), (b)-[:ORTAKPROJE]->(a:ARASTIRMACI)";
+                    var birlestir2 = session.WriteTransaction(tx =>
+                    {
+                        var result = tx.Run(query);
+                        return result;
+                    });
+
+                }
             }
             //arastirmaci varsa
             else
             {
+                query = $"MATCH(y:YAYIN{{YayinID:{eklemeSayfasiModel.YayinID}}}) RETURN y";
+                var readResult2 = session.ReadTransaction(tx =>
+                {
+                    var result = tx.Run(query);
+                    return (result.ToList());
+                });
+                //arastırmacı var yayın yok
+                if (readResult2.Count() == 0)
+                {
+                    query = $"MATCH(t:YAYINTURU{{YayinTuruID:{eklemeSayfasiModel.YayinTuruID}}}) RETURN t";
+                    var readResult3 = session.ReadTransaction(tx =>
+                    {
+                        var result = tx.Run(query);
+                        return (result.ToList());
+                    });
+                    //tür yok arastırmaci var yayın yok
+                    if (readResult3.Count() == 0)
+                    {
+                        query = $"CREATE(y:YAYIN{{YayinID:{eklemeSayfasiModel.YayinID},YayinAdi:'{eklemeSayfasiModel.YayinAdi}',YayinYili:{eklemeSayfasiModel.YayinYili}}}) RETURN y";
 
+                        var ekle2 = session.WriteTransaction(tx =>
+                        {
+                            var result = tx.Run(query);
+                            return result;
+                        });
+
+                        query = $"CREATE(t:YAYINTURU{{YayinTuruID:{eklemeSayfasiModel.YayinTuruID},YayinTuru:'{eklemeSayfasiModel.YayinTuru}',YayinYeri:'{eklemeSayfasiModel.YayinYeri}'}}) RETURN t";
+
+                        var ekle3 = session.WriteTransaction(tx =>
+                        {
+                            var result = tx.Run(query);
+                            return result;
+                        });
+
+                        query = $"MATCH(a:ARASTIRMACI{{ArastirmaciID:{eklemeSayfasiModel.ArastirmaciID}}}),(y:YAYIN{{YayinID:{eklemeSayfasiModel.YayinID}}}),(t:YAYINTURU{{YayinID:{eklemeSayfasiModel.YayinTuruID}}}) CREATE (a)-[:YAYINLADI]->(y)-[:TURU]->(t)";
+                        var birlestir = session.WriteTransaction(tx =>
+                        {
+                            var result = tx.Run(query);
+                            return result;
+                        });
+                    }
+                }
+                //arastırmcai var yayın var
+                else
+                {
+                    query = $"MATCH(a:ARASTIRMACI{{ArastirmaciID:{eklemeSayfasiModel.ArastirmaciID}}}),(y:YAYIN{{YayinID:{eklemeSayfasiModel.YayinID}}}),(t:YAYINTURU{{YayinID:{eklemeSayfasiModel.YayinTuruID}}}) CREATE (a)-[:YAYINLADI]->(y)-[:TURU]->(t)";
+                    var birlestir = session.WriteTransaction(tx =>
+                    {
+                        var result = tx.Run(query);
+                        return result;
+                    });
+                    // yayın varsa türsüz olamaz
+                    // o yayın olduğu takdirde türü kontrol etmeye gerek yok
+                    query = $"MATCH(y:YAYIN{{YayinID:{eklemeSayfasiModel.YayinID}}}),(a:ARASTIRMACI),(a)-[:YAYINLADI]->(y),(b:ARASTIRMACI) WHERE NOT (a)-[:ORTAKPROJE]->(b:ARASTIRMACI) and (b)-[:ORTAKPROJE]->(a:ARASTIRMACI) CREATE (a)-[:ORTAKPROJE]->(b:ARASTIRMACI), (b)-[:ORTAKPROJE]->(a:ARASTIRMACI)";
+                    var birlestir2 = session.WriteTransaction(tx =>
+                    {
+                        var result = tx.Run(query);
+                        return result;
+                    });
+                }
             }
         }
         public void Dispose()
