@@ -307,8 +307,17 @@ namespace akademikArama.Services
                             return result;
                         });
 
-                        query = $"MATCH(a:ARASTIRMACI{{ArastirmaciID:{eklemeSayfasiModel.ArastirmaciID}}}),(y:YAYIN{{YayinID:{eklemeSayfasiModel.YayinID}}}),(t:YAYINTURU{{YayinID:{eklemeSayfasiModel.YayinTuruID}}}) CREATE (a)-[:YAYINLADI]->(y)-[:TURU]->(t)";
+                        query = $"MATCH(a:ARASTIRMACI{{ArastirmaciID:{eklemeSayfasiModel.ArastirmaciID}}}),(y:YAYIN{{YayinID:{eklemeSayfasiModel.YayinID}}}) CREATE (a)-[:YAYINLADI]->(y)";
+                        System.Diagnostics.Debug.WriteLine("query ==  " + query);
                         var birlestir = session.WriteTransaction(tx =>
+                        {
+                            var result = tx.Run(query);
+                            return result;
+                        });
+
+                        query = $"MATCH(y:YAYIN{{YayinID:{eklemeSayfasiModel.YayinID}}}),(t:YAYINTURU{{YayinTuruID:{eklemeSayfasiModel.YayinTuruID}}}) CREATE (y)-[:TURU]->(t)";
+                        System.Diagnostics.Debug.WriteLine("query ==  " + query);
+                        var birlestir2 = session.WriteTransaction(tx =>
                         {
                             var result = tx.Run(query);
                             return result;
@@ -326,15 +335,24 @@ namespace akademikArama.Services
                         var result = tx.Run(query);
                         return result;
                     });
-                    query = $"MATCH(a:ARASTIRMACI{{ArastirmaciID:{eklemeSayfasiModel.ArastirmaciID}}}),(y:YAYIN{{YayinID:{eklemeSayfasiModel.YayinID}}}),(t:YAYINTURU{{YayinID:{eklemeSayfasiModel.YayinTuruID}}}) CREATE (a)-[:YAYINLADI]->(y)-[:TURU]->(t)";
+                    query = $"MATCH(a:ARASTIRMACI{{ArastirmaciID:{eklemeSayfasiModel.ArastirmaciID}}}),(y:YAYIN{{YayinID:{eklemeSayfasiModel.YayinID}}}) CREATE (a)-[:YAYINLADI]->(y)";
+                    System.Diagnostics.Debug.WriteLine("query ==  " + query);
                     var birlestir = session.WriteTransaction(tx =>
                     {
                         var result = tx.Run(query);
                         return result;
                     });
 
-                    query = $"MATCH(y:YAYIN{{YayinID:{eklemeSayfasiModel.YayinID}}}),(a:ARASTIRMACI),(a)-[:YAYINLADI]->(y),(b:ARASTIRMACI) WHERE NOT (a)-[:ORTAKPROJE]->(b:ARASTIRMACI) and (b)-[:ORTAKPROJE]->(a:ARASTIRMACI) CREATE (a)-[:ORTAKPROJE]->(b:ARASTIRMACI), (b)-[:ORTAKPROJE]->(a:ARASTIRMACI)";
+                    query = $"MATCH(y:YAYIN{{YayinID:{eklemeSayfasiModel.YayinID}}}),(t:YAYINTURU{{YayinTuruID:{eklemeSayfasiModel.YayinTuruID}}}) CREATE (y)-[:TURU]->(t)";
+                    System.Diagnostics.Debug.WriteLine("query ==  " + query);
                     var birlestir2 = session.WriteTransaction(tx =>
+                    {
+                        var result = tx.Run(query);
+                        return result;
+                    });
+
+                    query = $"MATCH(a:ARASTIRMACI{{ArastirmaciID:{eklemeSayfasiModel.ArastirmaciID}}}),(b:ARASTIRMACI),(y:YAYIN{{YayinID:{eklemeSayfasiModel.YayinID}}}) WHERE b.ArastirmaciID <>{eklemeSayfasiModel.ArastirmaciID} and (b)-[:YAYINLADI]->(y) CREATE (a)-[:ORTAKPROJE]->(b),(a)-[:ORTAKPROJE]->(b)";
+                    var birlestir3 = session.WriteTransaction(tx =>
                     {
                         var result = tx.Run(query);
                         return result;
@@ -379,8 +397,17 @@ namespace akademikArama.Services
                             return result;
                         });
 
-                        query = $"MATCH(a:ARASTIRMACI{{ArastirmaciID:{eklemeSayfasiModel.ArastirmaciID}}}),(y:YAYIN{{YayinID:{eklemeSayfasiModel.YayinID}}}),(t:YAYINTURU{{YayinID:{eklemeSayfasiModel.YayinTuruID}}}) CREATE (a)-[:YAYINLADI]->(y)-[:TURU]->(t)";
+                        query = $"MATCH(a:ARASTIRMACI{{ArastirmaciID:{eklemeSayfasiModel.ArastirmaciID}}}),(y:YAYIN{{YayinID:{eklemeSayfasiModel.YayinID}}}) CREATE (a)-[:YAYINLADI]->(y)";
+                        System.Diagnostics.Debug.WriteLine("query ==  " + query);
                         var birlestir = session.WriteTransaction(tx =>
+                        {
+                            var result = tx.Run(query);
+                            return result;
+                        });
+
+                        query = $"MATCH(y:YAYIN{{YayinID:{eklemeSayfasiModel.YayinID}}}),(t:YAYINTURU{{YayinTuruID:{eklemeSayfasiModel.YayinTuruID}}}) CREATE (y)-[:TURU]->(t)";
+                        System.Diagnostics.Debug.WriteLine("query ==  " + query);
+                        var birlestir2 = session.WriteTransaction(tx =>
                         {
                             var result = tx.Run(query);
                             return result;
@@ -390,16 +417,18 @@ namespace akademikArama.Services
                 //arastırmcai var yayın var
                 else
                 {
-                    query = $"MATCH(a:ARASTIRMACI{{ArastirmaciID:{eklemeSayfasiModel.ArastirmaciID}}}),(y:YAYIN{{YayinID:{eklemeSayfasiModel.YayinID}}}),(t:YAYINTURU{{YayinID:{eklemeSayfasiModel.YayinTuruID}}}) CREATE (a)-[:YAYINLADI]->(y)-[:TURU]->(t)";
+                    query = $"MATCH(a:ARASTIRMACI{{ArastirmaciID:{eklemeSayfasiModel.ArastirmaciID}}}),(y:YAYIN{{YayinID:{eklemeSayfasiModel.YayinID}}}) CREATE (a)-[:YAYINLADI]->(y)";
+                    System.Diagnostics.Debug.WriteLine("query ==  " + query);
                     var birlestir = session.WriteTransaction(tx =>
                     {
                         var result = tx.Run(query);
                         return result;
                     });
+
                     // yayın varsa türsüz olamaz
                     // o yayın olduğu takdirde türü kontrol etmeye gerek yok
-                    query = $"MATCH(y:YAYIN{{YayinID:{eklemeSayfasiModel.YayinID}}}),(a:ARASTIRMACI),(a)-[:YAYINLADI]->(y),(b:ARASTIRMACI) WHERE NOT (a)-[:ORTAKPROJE]->(b:ARASTIRMACI) and (b)-[:ORTAKPROJE]->(a:ARASTIRMACI) CREATE (a)-[:ORTAKPROJE]->(b:ARASTIRMACI), (b)-[:ORTAKPROJE]->(a:ARASTIRMACI)";
-                    var birlestir2 = session.WriteTransaction(tx =>
+                    query = $"MATCH(a:ARASTIRMACI{{ArastirmaciID:{eklemeSayfasiModel.ArastirmaciID}}}),(b:ARASTIRMACI),(y:YAYIN{{YayinID:{eklemeSayfasiModel.YayinID}}}) WHERE b.ArastirmaciID <>{eklemeSayfasiModel.ArastirmaciID} and (b)-[:YAYINLADI]->(y) CREATE (a)-[:ORTAKPROJE]->(b),(a)-[:ORTAKPROJE]->(b)";
+                    var birlestir3 = session.WriteTransaction(tx =>
                     {
                         var result = tx.Run(query);
                         return result;
