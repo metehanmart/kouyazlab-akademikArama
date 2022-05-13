@@ -343,14 +343,6 @@ namespace akademikArama.Services
                         return result;
                     });
 
-                    query = $"MATCH(y:YAYIN{{YayinID:{eklemeSayfasiModel.YayinID}}}),(t:YAYINTURU{{YayinTuruID:{eklemeSayfasiModel.YayinTuruID}}}) CREATE (y)-[:TURU]->(t)";
-                    System.Diagnostics.Debug.WriteLine("query ==  " + query);
-                    var birlestir2 = session.WriteTransaction(tx =>
-                    {
-                        var result = tx.Run(query);
-                        return result;
-                    });
-
                     query = $"MATCH(a:ARASTIRMACI{{ArastirmaciID:{eklemeSayfasiModel.ArastirmaciID}}}),(b:ARASTIRMACI),(y:YAYIN{{YayinID:{eklemeSayfasiModel.YayinID}}}) WHERE b.ArastirmaciID <>{eklemeSayfasiModel.ArastirmaciID} and (b)-[:YAYINLADI]->(y) CREATE (a)-[:ORTAKPROJE]->(b),(b)-[:ORTAKPROJE]->(a)";
                     var birlestir3 = session.WriteTransaction(tx =>
                     {
