@@ -351,7 +351,7 @@ namespace akademikArama.Services
                         return result;
                     });
 
-                    query = $"MATCH(a:ARASTIRMACI{{ArastirmaciID:{eklemeSayfasiModel.ArastirmaciID}}}),(b:ARASTIRMACI),(y:YAYIN{{YayinID:{eklemeSayfasiModel.YayinID}}}) WHERE b.ArastirmaciID <>{eklemeSayfasiModel.ArastirmaciID} and (b)-[:YAYINLADI]->(y) CREATE (a)-[:ORTAKPROJE]->(b),(a)-[:ORTAKPROJE]->(b)";
+                    query = $"MATCH(a:ARASTIRMACI{{ArastirmaciID:{eklemeSayfasiModel.ArastirmaciID}}}),(b:ARASTIRMACI),(y:YAYIN{{YayinID:{eklemeSayfasiModel.YayinID}}}) WHERE b.ArastirmaciID <>{eklemeSayfasiModel.ArastirmaciID} and (b)-[:YAYINLADI]->(y) CREATE (a)-[:ORTAKPROJE]->(b),(b)-[:ORTAKPROJE]->(a)";
                     var birlestir3 = session.WriteTransaction(tx =>
                     {
                         var result = tx.Run(query);
@@ -427,7 +427,7 @@ namespace akademikArama.Services
 
                     // yayın varsa türsüz olamaz
                     // o yayın olduğu takdirde türü kontrol etmeye gerek yok
-                    query = $"MATCH(a:ARASTIRMACI{{ArastirmaciID:{eklemeSayfasiModel.ArastirmaciID}}}),(b:ARASTIRMACI),(y:YAYIN{{YayinID:{eklemeSayfasiModel.YayinID}}}) WHERE b.ArastirmaciID <>{eklemeSayfasiModel.ArastirmaciID} and (b)-[:YAYINLADI]->(y) CREATE (a)-[:ORTAKPROJE]->(b),(a)-[:ORTAKPROJE]->(b)";
+                    query = $"MATCH(a:ARASTIRMACI{{ArastirmaciID:{eklemeSayfasiModel.ArastirmaciID}}}),(b:ARASTIRMACI),(y:YAYIN{{YayinID:{eklemeSayfasiModel.YayinID}}}) WHERE b.ArastirmaciID <>{eklemeSayfasiModel.ArastirmaciID} and (b)-[:YAYINLADI]->(y) CREATE (a)-[:ORTAKPROJE]->(b),(b)-[:ORTAKPROJE]->(a)";
                     var birlestir3 = session.WriteTransaction(tx =>
                     {
                         var result = tx.Run(query);

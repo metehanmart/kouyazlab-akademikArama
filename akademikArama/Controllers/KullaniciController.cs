@@ -26,7 +26,7 @@ namespace akademikArama.Controllers
             //arama işlemleri
             List<AramaSayfasiModel> modelList = new List<AramaSayfasiModel>();
             Neo4jDriverHelper helper = new Neo4jDriverHelper(MyConstants.Uri, MyConstants.UserName, MyConstants.Password);
-            if (AranacakArastirmaci != null || AranacakArastirmaci != "")
+            if (AranacakArastirmaci != null && AranacakArastirmaci != "" && (AranacakEser == null || AranacakEser == ""))
             {
                 List<AramaSayfasiModel> arastirmaciList = helper.FindArastirmaci(AranacakArastirmaci);
                 foreach (var i in arastirmaciList)
@@ -43,12 +43,21 @@ namespace akademikArama.Controllers
                 }
                 return View(modelList);
             }
+            else
+            {
 
+            }
             //else if (AranacakEser != null || AranacakEser != "")
             //    helper.FindArastirmaci(AranacakArastirmaci);
             return View();
         }
 
+        public JsonResult Gecici()
+        {
+            string tmp = "hadele";
+            return Json(tmp, JsonRequestBehavior.AllowGet);
+
+        }
         public ActionResult GrafikArastirmaci()
         {
             return View();

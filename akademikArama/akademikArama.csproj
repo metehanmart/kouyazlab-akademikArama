@@ -194,6 +194,7 @@
     <Content Include="Views\Kullanici\AramaSayfasi.cshtml" />
     <Content Include="Views\Admin\EklemeSayfasi.cshtml" />
     <Content Include="Views\Kullanici\GrafikArastirmaci.cshtml" />
+    <Content Include="Views\Kullanici\Gecici.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
