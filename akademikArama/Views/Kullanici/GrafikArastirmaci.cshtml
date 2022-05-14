@@ -1,12 +1,10 @@
-﻿@model IEnumerable<akademikArama.Models.ArastirmaciModel>
-@{
+﻿@{
     Layout = null;
 }
 
 <!DOCTYPE html>
 
 <html>
-
 <head>
     <title> Hadee </title>
     <style type="text/css">
@@ -15,11 +13,32 @@
             height: 700px;
         }
     </style>
-
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
     <script src="https://cdn.neo4jlabs.com/neovis.js/v1.5.0/neovis.js"></script>
     <script>
-        
         function draw() {
+
+
+            $(document).ready(function () {
+                var myJsvariable = '';
+                console.log("hadeee2 == " + myJsvariable);
+                $.ajax({
+                    url: "/Kullanici/Gecici",
+                    type: "POST",
+                    dataType: "json",
+                    data: myJsvariable,
+                    success: function (mydata) {
+                        let lastid = 0;
+                        let indxChange = 0;
+                        const obj = JSON.stringify(mydata);
+                        console.log("obj == " + obj);
+
+                    }
+                });
+            });
+
+
+
             var config = {
                 container_id: "viz",
                 server_url: "bolt://3.231.33.56:7687",
@@ -41,7 +60,7 @@
                 relationships: {
                     "YAYINLANDI": {
                         caption: false
-                            //"caption": "ekmek"
+                        //"caption": "ekmek"
                     }
                 },
                 //initial_cypher: "MATCH(a: ARASTIRMACI)< -[r]-(p: ARASTIRMACI)-[r2]-> (y: YAYIN)-[r3]-> (t: YAYINTURU) WHERE p.ArastirmaciAdi = 'Alev' AND p.ArastirmaciSoyadi = 'Mutlu' RETURN *;"
@@ -62,19 +81,12 @@
                 });
 
             });
-            /*
-           viz.registerOnEvent("completed", (e) => {
-               viz["_network"].on("click", (event) => {
-                   console.log(event.nodes[0]);
-               });
-           });
-           */
         }
     </script>
 </head>
 
 <body onload="draw()">
-    <div id="mynetwork"></div>
+
     <div id="viz"></div>
 
 </body>
