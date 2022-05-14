@@ -15,9 +15,10 @@
             height: 700px;
         }
     </style>
+
     <script src="https://cdn.neo4jlabs.com/neovis.js/v1.5.0/neovis.js"></script>
     <script>
-
+        
         function draw() {
             var config = {
                 container_id: "viz",
@@ -27,7 +28,8 @@
 
                 labels: {
                     "ARASTIRMACI": {
-                        "caption": 'ArastirmaciAdi'
+                        "caption": "ArastirmaciAdi",
+                        "image": 'https://www.kvkk-egitimi.com/wp-content/uploads/kvkk-kisisel-veriler-hangi-sartlarda-silinmeli.png'
                     },
                     "YAYINTURU": {
                         "caption": 'YayinTuru'
@@ -39,18 +41,40 @@
                 relationships: {
                     "YAYINLANDI": {
                         caption: false
+                            //"caption": "ekmek"
                     }
                 },
-                initial_cypher: "MATCH p = (a)-[r]->(b) RETURN *"
+                //initial_cypher: "MATCH(a: ARASTIRMACI)< -[r]-(p: ARASTIRMACI)-[r2]-> (y: YAYIN)-[r3]-> (t: YAYINTURU) WHERE p.ArastirmaciAdi = 'Alev' AND p.ArastirmaciSoyadi = 'Mutlu' RETURN *;"
+                initial_cypher: "MATCH (n)-[r]->(m) RETURN *;"
             }
             var viz = new NeoVis.default(config);
             viz.render();
+            viz.registerOnEvent("completed", (e) => {
+                // attach handlers when rendering is finished
+
+                viz["_network"].on("selectNode", (e1) => {
+
+                    console.log(e1.nodes[0]);
+                    node = e1.nodes[0]
+                    var final = viz['_nodes'][node].raw;
+                    console.log(final)
+                    //viz.renderWithCypher("MATCH(a: ARASTIRMACI)< -[r]-(p: ARASTIRMACI)-[r2]-> (y: YAYIN)-[r3]-> (t: YAYINTURU) WHERE p.ArastirmaciID= " + final + " RETURN *");
+                });
+
+            });
+            /*
+           viz.registerOnEvent("completed", (e) => {
+               viz["_network"].on("click", (event) => {
+                   console.log(event.nodes[0]);
+               });
+           });
+           */
         }
     </script>
 </head>
 
 <body onload="draw()">
-
+    <div id="mynetwork"></div>
     <div id="viz"></div>
 
 </body>
