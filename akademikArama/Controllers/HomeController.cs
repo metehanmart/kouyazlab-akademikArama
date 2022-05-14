@@ -13,22 +13,8 @@ namespace akademikArama.Controllers
             return View();
         }
 
-        [HttpGet]
-        public ActionResult Login()
-        {
-            return View();
-        }
+        
 
-        [HttpPost]
-        public ActionResult Login(string ePosta, string password)
-        {
-            /** veritabanı kontrol
-            * sonra yonlendirme 
-            * adminse admin sayfasına  
-            * 
-            **/
-            return View();
-        }
 
     }
 }

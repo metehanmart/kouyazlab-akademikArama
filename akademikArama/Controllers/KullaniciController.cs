@@ -21,34 +21,35 @@ namespace akademikArama.Controllers
 
         //POST
         [HttpPost]
-        public ActionResult AramaSayfasi(string? AranacakArastirmaci, string? AranacakEser)
+        public ActionResult AramaSayfasi(string? AranacakArastirmaci, string? AranacakEser, int? YayinYili)
         {
             //arama işlemleri
             List<AramaSayfasiModel> modelList = new List<AramaSayfasiModel>();
             Neo4jDriverHelper helper = new Neo4jDriverHelper(MyConstants.Uri, MyConstants.UserName, MyConstants.Password);
-            if (AranacakArastirmaci != null || AranacakArastirmaci != "")
-            {
-                List<AramaSayfasiModel> arastirmaciList = helper.FindArastirmaci(AranacakArastirmaci);
-                foreach (var i in arastirmaciList)
-                {
-                    AramaSayfasiModel model = new AramaSayfasiModel();
-                    model.ArastirmaciID = i.ArastirmaciID;
-                    model.ArastirmaciAdi = i.ArastirmaciAdi;
-                    model.ArasirmaciSoyadi = i.ArasirmaciSoyadi;
-                    model.YayinAdi = i.YayinAdi;
-                    model.YayinYili = i.YayinYili;
-                    model.YayinTuru = i.YayinTuru;
-                    model.CalistigiKisiler = i.CalistigiKisiler;
-                    modelList.Add(model);
-                }
-                return View(modelList);
-            }
 
-            //else if (AranacakEser != null || AranacakEser != "")
-            //    helper.FindArastirmaci(AranacakArastirmaci);
-            return View();
+            List<AramaSayfasiModel> arastirmaciList = helper.FindArastirmaci(AranacakArastirmaci, AranacakEser, YayinYili);
+            foreach (var i in arastirmaciList)
+            {
+                AramaSayfasiModel model = new AramaSayfasiModel();
+                model.ArastirmaciID = i.ArastirmaciID;
+                model.ArastirmaciAdi = i.ArastirmaciAdi;
+                model.ArasirmaciSoyadi = i.ArasirmaciSoyadi;
+                model.YayinAdi = i.YayinAdi;
+                model.YayinYili = i.YayinYili;
+                model.YayinTuru = i.YayinTuru;
+                model.CalistigiKisiler = i.CalistigiKisiler;
+                modelList.Add(model);
+            }
+            return View(modelList);
+
         }
 
+        public JsonResult Gecici()
+        {
+            string tmp = "hadele";
+            return Json(tmp, JsonRequestBehavior.AllowGet);
+
+        }
         public ActionResult GrafikArastirmaci()
         {
             return View();

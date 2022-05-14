@@ -15,7 +15,7 @@ namespace akademikArama.Controllers
 
         //GET
         [HttpGet]
-        public ActionResult EklemeSayfasi(int? id)
+        public ActionResult EklemeSayfasi()
         {
             System.Diagnostics.Debug.WriteLine("ekleme bas");
             List<EklemeSayfasiModel> modelList = new List<EklemeSayfasiModel>();
@@ -61,6 +61,40 @@ namespace akademikArama.Controllers
             modelList = neo4JDriverHelper.HepsiniGetir();
             modelList.AddRange(neo4JDriverHelper.EserleriGetir());
             return View(modelList);
+        }
+        [HttpGet]
+        public ActionResult Login()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Login(string EMail, string password)
+        {
+            /** veritabanı kontrol
+            * sonra yonlendirme 
+            * adminse admin sayfasına  
+            * 
+            **/
+            const string Admin = "proje3@gmail.com";
+            const string Password = "1234";
+            System.Diagnostics.Debug.WriteLine("password = " + password);
+            System.Diagnostics.Debug.WriteLine("password = " + EMail);
+            System.Diagnostics.Debug.WriteLine("password = " + Password);
+            System.Diagnostics.Debug.WriteLine("password = " + Admin);
+            if (EMail == Admin && Password == password)
+            {
+                return RedirectToAction("EklemeSayfasi", "Admin");
+
+
+            }
+
+            else
+            {
+                ViewBag.Yanlis = "Hatalı giriş lütfen e-posta adresininizi ve şifrenizi doğru girdiğinizden emin olun";
+                return View();
+            }
+
         }
 
     }
