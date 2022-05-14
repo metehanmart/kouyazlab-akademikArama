@@ -133,22 +133,51 @@ namespace akademikArama.Services
             return list;
         }
 
-        public List<AramaSayfasiModel> FindArastirmaci(string aranacakAd)
+        public List<AramaSayfasiModel> FindArastirmaci(string aranacakAd, string yayinAdi, int? yayinYili)
         {
+            char[] isimArr = aranacakAd.ToCharArray();
+            bool soyisimGirildiMi = false;
+            for (int i = 0; i < aranacakAd.Length; i++)
+            {
+                if (isimArr[i] == ' ')
+                {
+                    soyisimGirildiMi = true;
+                }
+            }
+
 
             string aranacakIsim = "", aranacakSoyisim = "";
-            string[] adsoyad = aranacakAd.Split(' ');
-            for (int i = 0; i < aranacakAd.Split(' ').Length - 1; i++)
+            if (soyisimGirildiMi == true)
             {
-                aranacakIsim += adsoyad[i] + " ";
+                string[] adsoyad = aranacakAd.Split(' ');
+                for (int i = 0; i < aranacakAd.Split(' ').Length - 1; i++)
+                {
+                    aranacakIsim += adsoyad[i] + " ";
+                }
+                //burada sıkıntı var bakmak lazım Alev yazdım hata verdi soyad olmayınca patlıyor
+                aranacakIsim = aranacakIsim.Substring(0, aranacakIsim.Length - 1);
+                aranacakSoyisim = adsoyad[aranacakAd.Split(' ').Length - 1];
             }
-            //burada sıkıntı var bakmak lazım Alev yazdım hata verdi soyad olmayınca patlıyor
-            aranacakIsim = aranacakIsim.Substring(0, aranacakIsim.Length - 1);
-            aranacakSoyisim = adsoyad[aranacakAd.Split(' ').Length - 1];
+            else
+            {
+                aranacakIsim = aranacakAd;
+            }
 
 
             List<AramaSayfasiModel> list = new List<AramaSayfasiModel>();
-            var query = "MATCH (a:ARASTIRMACI)<--(p:ARASTIRMACI)-->(y:YAYIN)-->(t:YAYINTURU)  WHERE p.ArastirmaciAdi = '" + aranacakIsim + "' AND p.ArastirmaciSoyadi = '" + aranacakSoyisim + "'RETURN a,y,p,t;";
+            var query = "";
+            if (yayinYili == 0 || yayinYili == null)
+            {
+                query = $"MATCH(a:ARASTIRMACI),(y:YAYIN),(t:YAYINTURU),(b:ARASTIRMACI) WHERE a.ArastirmaciAdi CONTAINS '{aranacakIsim}' AND a.ArastirmaciSoyadi CONTAINS '{aranacakSoyisim}' OR  " +
+                    $"a.ArastirmaciSoyadi CONTAINS '{aranacakIsim}' AND " +
+                    $"y.YayinAdi CONTAINS '{yayinAdi}' AND (a)-[:YAYINLADI]->(y) AND (y)-[:TURU]->(t) AND (a)-[:ORTAKPROJE]->(b)-[:YAYINLADI]->(y)  RETURN a,y,t,b;";
+            }
+            else
+            {
+                query = $"MATCH(a:ARASTIRMACI),(y:YAYIN),(t:YAYINTURU),(b:ARASTIRMACI) WHERE a.ArastirmaciAdi CONTAINS '{aranacakIsim}' AND a.ArastirmaciSoyadi CONTAINS '{aranacakSoyisim}' " +
+                    $"OR a.ArastirmaciSoyadi CONTAINS '{aranacakIsim}' AND " +
+                    $"y.YayinAdi CONTAINS '{yayinAdi}' AND y.YayinYili = {yayinYili} AND (a)-[:YAYINLADI]->(y) AND (y)-[:TURU]->(t) AND (a)-[:ORTAKPROJE]->(b)-[:YAYINLADI]->(y)  RETURN a,y,t,b;";
+            }
             System.Diagnostics.Debug.WriteLine(query);
             var session = _driver.Session();
             try
@@ -162,9 +191,9 @@ namespace akademikArama.Services
                 foreach (var result in readResults)
                 {
                     AramaSayfasiModel tmp = new AramaSayfasiModel();
-                    var Node = result["p"].As<INode>();
+                    var Node = result["a"].As<INode>();
                     var Node2 = result["y"].As<INode>();
-                    var Node3 = result["a"].As<INode>();
+                    var Node3 = result["b"].As<INode>();
                     var Node4 = result["t"].As<INode>();
                     tmp.ArastirmaciID = Node["ArastirmaciID"].As<Int32>();
                     tmp.ArastirmaciAdi = Node["ArastirmaciAdi"].As<String>();
