@@ -49,5 +49,6 @@ namespace akademikArama.Controllers
         {
             return View();
         }
+
     }
 }

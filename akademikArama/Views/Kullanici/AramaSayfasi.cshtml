@@ -54,9 +54,10 @@ iki textbox biri eser diğeri ortak çalıştığı kişiler
                         <td> @i.ArastirmaciID</td>
                         @if (@i.CalistigiKisiler != null)
                         {
-                            <td>
-                                @Html.ActionLink(i.ArastirmaciAdi, "GrafikArastirmaci", "Kullanici", new { ArastirmaciAdi = i.ArastirmaciAdi, ArastirmaciSoyadi = i.ArasirmaciSoyadi }, new { target = "_blank" })
-                            </td>
+                    <td onclick="myFunction(this)">
+                        @Html.ActionLink(i.ArastirmaciAdi, "GrafikArastirmaci", "Kullanici", new { ArastirmaciAdi = i.ArastirmaciAdi, ArastirmaciSoyadi = i.ArasirmaciSoyadi }, new { target = "_blank" })
+                   
+                    </td>
                         }
                         else
                         {
@@ -84,7 +85,11 @@ iki textbox biri eser diğeri ortak çalıştığı kişiler
     </table>
 
 </div>
-
+<script>
+    function myFunction(x) {
+        window.location.href = "http://www.w3schools.com";
+    }
+</script>
 <div class="uyari">
     <p>Arama yaparken küçük ve büyük harflere dikkat ediniz</p>
 </div>
