@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     Layout = null;
 }
 
@@ -15,28 +14,32 @@
         }
     </style>
     <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+
     <script src="https://cdn.neo4jlabs.com/neovis.js/v1.5.0/neovis.js"></script>
     <script>
+
         function draw() {
+            const queryString = window.location.search;
+            //console.log();
+            var AranacakID = queryString.substr(queryString.indexOf('=', queryString.length));
 
+            //$(document).ready(function () {
+            //    var myJsvariable = '';
+            //    console.log("hadeee2 == " + myJsvariable);
+            //    $.ajax({
+            //        url: "/Kullanici/Gecici",
+            //        type: "POST",
+            //        dataType: "json",
+            //        data: myJsvariable,
+            //        success: function (mydata) {
+            //            let lastid = 0;
+            //            let indxChange = 0;
+            //            const obj = JSON.stringify(mydata);
+            //            console.log("obj == " + obj);
 
-            $(document).ready(function () {
-                var myJsvariable = '';
-                console.log("hadeee2 == " + myJsvariable);
-                $.ajax({
-                    url: "/Kullanici/Gecici",
-                    type: "POST",
-                    dataType: "json",
-                    data: myJsvariable,
-                    success: function (mydata) {
-                        let lastid = 0;
-                        let indxChange = 0;
-                        const obj = JSON.stringify(mydata);
-                        console.log("obj == " + obj);
-
-                    }
-                });
-            });
+            //        }
+            //    });
+            //});
 
 
 
@@ -47,18 +50,48 @@
                 server_password: "straws-twin-skin",
 
                 labels: {
-
+                    "ARASTIRMACI": {
+                        "caption": "ArastirmaciAdi",
+                        "image": 'https://www.kvkk-egitimi.com/wp-content/uploads/kvkk-kisisel-veriler-hangi-sartlarda-silinmeli.png'
+                    },
+                    "YAYINTURU": {
+                        "caption": 'YayinTuru'
+                    },
+                    "YAYIN": {
+                        "caption": 'YayinYili'
+                    }
                 },
                 relationships: {
                     "YAYINLANDI": {
-                        caption: false,
-
+                        caption: false
+                        //"caption": "ekmek"
                     }
                 },
-                initial_cypher: "MATCH p = (a)-[r]->(b) RETURN *"
+                initial_cypher: "MATCH(a: ARASTIRMACI)< -[r]-(p: ARASTIRMACI)-[r2]-> (y: YAYIN)-[r3]-> (t: YAYINTURU) WHERE p.ArastirmaciID = " + AranacakID + " RETURN *;"
+                //initial_cypher: "MATCH (n)-[r]->(m) RETURN *;"
             }
+
+
             var viz = new NeoVis.default(config);
             viz.render();
+            viz.registerOnEvent("completed", (e) => {
+                // attach handlers when rendering is finished
+
+                viz["_network"].on("selectNode", (ev) => {
+                    //const tiklananNode = ev.nodes[0];
+                    //const node = viz['_nodes'][tiklananNode].raw;
+                    //console.log(node);
+
+
+                    console.log($('.vis-tooltip').text());
+
+                    //viz.renderWithCypher("MATCH(a: ARASTIRMACI)< -[r]-(p: ARASTIRMACI)-[r2]-> (y: YAYIN)-[r3]-> (t: YAYINTURU) WHERE p.ArastirmaciID= " + final + " RETURN *");
+
+
+
+                });
+
+            });
         }
     </script>
 </head>

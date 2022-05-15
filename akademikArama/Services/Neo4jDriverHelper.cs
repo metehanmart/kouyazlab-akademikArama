@@ -186,8 +186,8 @@ namespace akademikArama.Services
         public bool ArastirmaciEkleme(EklemeSayfasiModel eklemeSayfasiModel)
         {
             bool status = true;
-            string nodeName = eklemeSayfasiModel.ArastirmaciAdi + eklemeSayfasiModel.ArasirmaciSoyadi;
-            string query = $"CREATE({nodeName}:ARASTIRMACI{{ArastirmaciID:{eklemeSayfasiModel.ArastirmaciID},ArastirmaciAdi:'{eklemeSayfasiModel.ArastirmaciAdi}',ArastirmaciSoyadi:'{eklemeSayfasiModel.ArasirmaciSoyadi}'}}) RETURN {nodeName}";
+            //string nodeName = eklemeSayfasiModel.ArastirmaciAdi + eklemeSayfasiModel.ArasirmaciSoyadi;
+            string query = $"CREATE(a:ARASTIRMACI{{ArastirmaciID:{eklemeSayfasiModel.ArastirmaciID},ArastirmaciAdi:'{eklemeSayfasiModel.ArastirmaciAdi}',ArastirmaciSoyadi:'{eklemeSayfasiModel.ArasirmaciSoyadi}'}}) RETURN a";
             System.Diagnostics.Debug.WriteLine("query = " + query);
             List<EklemeSayfasiModel> list = new List<EklemeSayfasiModel>();
             using (var session = _driver.Session())
