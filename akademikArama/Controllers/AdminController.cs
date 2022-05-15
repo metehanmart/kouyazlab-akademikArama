@@ -6,7 +6,7 @@ using System.Web.Mvc;
 using Neo4j.Driver;
 using akademikArama.Models;
 using akademikArama.Services;
-
+using System.Web.Security;
 
 namespace akademikArama.Controllers
 {
@@ -14,6 +14,7 @@ namespace akademikArama.Controllers
     {
 
         //GET
+        [Authorize]
         [HttpGet]
         public ActionResult EklemeSayfasi()
         {
@@ -26,6 +27,7 @@ namespace akademikArama.Controllers
             System.Diagnostics.Debug.WriteLine("ekleme son");
             return View(modelList);
         }
+        [Authorize]
         [HttpPost]
         public ActionResult EklemeSayfasi(EklemeSayfasiModel eklemeSayfasiModel)
         {
@@ -76,17 +78,16 @@ namespace akademikArama.Controllers
             * adminse admin sayfasına  
             * 
             **/
-            const string Admin = "proje3@gmail.com";
+            const string AdminEmail = "proje3@gmail.com";
             const string Password = "1234";
             System.Diagnostics.Debug.WriteLine("password = " + password);
             System.Diagnostics.Debug.WriteLine("password = " + EMail);
             System.Diagnostics.Debug.WriteLine("password = " + Password);
-            System.Diagnostics.Debug.WriteLine("password = " + Admin);
-            if (EMail == Admin && Password == password)
+            System.Diagnostics.Debug.WriteLine("password = " + AdminEmail);
+            if (EMail == AdminEmail && Password == password)
             {
+                FormsAuthentication.SetAuthCookie(AdminEmail, false);
                 return RedirectToAction("EklemeSayfasi", "Admin");
-
-
             }
 
             else
