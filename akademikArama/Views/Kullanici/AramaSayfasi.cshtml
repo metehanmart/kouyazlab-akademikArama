@@ -71,7 +71,7 @@ iki textbox biri eser diğeri ortak çalıştığı kişiler
                         <td> @i.YayinTuru</td>
                         @if (@i.CalistigiKisiler != null)
                         {
-                            <td>
+                            <td onclick="CalistigiKisilerFunction('@i.CalistigiKisiler')">
                                 @Html.ActionLink(i.CalistigiKisiler, "GrafikArastirmaci", "Kullanici", new { ArastirmaciAdi = i.CalistigiKisiler }, new { target = "_blank" })
                             </td>
                         }
@@ -90,6 +90,20 @@ iki textbox biri eser diğeri ortak çalıştığı kişiler
         console.log("Arastirmaci Adi " + ArastirmaciAdi + " Arastirmaci Soyadi " + ArasirmaciSoyadi);
         ArastirmaciAdi = ArastirmaciAdi.replace(" ", "%20");
         window.location.href = "http://localhost:44360/Kullanici/AramaSayfasi?" + "ArastirmaciAdi=" + ArastirmaciAdi + "&ArastirmaciSoyadi=" + ArasirmaciSoyadi;
+    }
+    function CalistigiKisilerFunction(ArastirmaciAdSoyad) {
+        var tamAd = ArastirmaciAdSoyad.split(" ");
+
+        var ad = "";
+        var soyad = "";
+        for (let i = 0; i < tamAd.length - 1; i++) {
+            ad += tamAd[i] + " ";
+        }
+        ad = ad.substr(0, ad.length - 1);
+        soyad = tamAd[tamAd.length - 1];
+        ad = ad.replace(" ", "%20");
+        var urlString = "ArastirmaciAdi=" + ad + "&ArastirmaciSoyadi=" + soyad;
+        window.location.href = "http://localhost:44360/Kullanici/AramaSayfasi?" + urlString;
     }
 </script>
 <p id="rData"></p>

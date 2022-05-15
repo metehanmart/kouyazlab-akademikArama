@@ -57,26 +57,6 @@ namespace akademikArama.Controllers
             return View(modelList);
 
         }
-        public JsonResult AramaHelper(string ArastirmaciAdi, string ArastirmaciSoyadi, string AranacakEser, int? YayinYili)
-        {
-            List<AramaSayfasiModel> modelList = new List<AramaSayfasiModel>();
-            Neo4jDriverHelper helper = new Neo4jDriverHelper(MyConstants.Uri, MyConstants.UserName, MyConstants.Password);
-            List<AramaSayfasiModel> arastirmaciList = helper.FindArastirmaci(ArastirmaciAdi, ArastirmaciSoyadi, AranacakEser, YayinYili);
-            foreach (var i in arastirmaciList)
-            {
-                AramaSayfasiModel model = new AramaSayfasiModel();
-                model.ArastirmaciID = i.ArastirmaciID;
-                model.ArastirmaciAdi = i.ArastirmaciAdi;
-                model.ArasirmaciSoyadi = i.ArasirmaciSoyadi;
-                model.YayinAdi = i.YayinAdi;
-                model.YayinYili = i.YayinYili;
-                model.YayinTuru = i.YayinTuru;
-                model.CalistigiKisiler = i.CalistigiKisiler;
-                modelList.Add(model);
-            }
-
-            return Json(modelList);
-        }
 
         public ActionResult GrafikArastirmaci()
         {
