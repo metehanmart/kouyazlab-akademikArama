@@ -20,7 +20,24 @@
         <input type="submit" value="Ekle" />
     }
 </div>
-
+<br />
+<div class="ortala">
+    @using (Html.BeginForm("SilmeSayfasi1", "Admin", FormMethod.Post))
+    {
+        @Html.TextBox("ArastirmaciID", "", new { placeholder = "Arastirmaci ID" })
+        <input type="submit" value="ArastirmaciSil" />
+    }
+    @using (Html.BeginForm("SilmeSayfasi2", "Admin", FormMethod.Post))
+    {
+        @Html.TextBox("YayinID", "", new { placeholder = "Yayın ID" })
+        <input type="submit" value="YayinSil" />
+    }
+    @using (Html.BeginForm("SilmeSayfasi3", "Admin", FormMethod.Post))
+    {
+        @Html.TextBox("YayinTuruID", "", new { placeholder = "Yayın Turu ID" })
+        <input type="submit" value="YayinTuruSil" />
+    }
+</div>
 <div class="tablo" , id="arastirmacilarListesi">
     <table class="table table-striped">
         <caption>Arastırmacılar Listesi</caption>
