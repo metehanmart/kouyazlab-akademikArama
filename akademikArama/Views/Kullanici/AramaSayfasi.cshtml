@@ -50,20 +50,23 @@ iki textbox biri eser diğeri ortak çalıştığı kişiler
                 foreach (var i in Model)
                 {
 
-        <tr>
-            <td> @i.ArastirmaciID</td>
-            <td>
-                @Html.ActionLink(i.ArastirmaciAdi, "GrafikArastirmaci", "Kullanici", new { ArastirmaciAdi = i.ArastirmaciAdi, ArastirmaciSoyadi = i.ArasirmaciSoyadi }, new { target = "_blank" })
-            </td>
-            <td> @i.ArasirmaciSoyadi</td>
-            <td> @i.YayinAdi</td>
-            <td> @i.YayinYili</td>
-            <td> @i.YayinTuru</td>
-            
-            <td>
-                @Html.ActionLink(i.CalistigiKisiler, "GrafikArastirmaci", "Kullanici", new { ArastirmaciAdi = i.CalistigiKisiler }, new { target = "_blank" })
-            </td>
-        </tr>
+                    <tr>
+                        <td> @i.ArastirmaciID</td>
+                        <td>
+                            @Html.ActionLink(i.ArastirmaciAdi, "GrafikArastirmaci", "Kullanici", new { ArastirmaciAdi = i.ArastirmaciAdi, ArastirmaciSoyadi = i.ArasirmaciSoyadi }, new { target = "_blank" })
+                        </td>
+                        <td> @i.ArasirmaciSoyadi</td>
+                        <td> @i.YayinAdi</td>
+                        <td> @i.YayinYili</td>
+                        <td> @i.YayinTuru</td>
+                        @if (@i.CalistigiKisiler != null)
+                        {
+                            <td>
+                                @Html.ActionLink(i.CalistigiKisiler, "GrafikArastirmaci", "Kullanici", new { ArastirmaciAdi = i.CalistigiKisiler }, new { target = "_blank" })
+                            </td>
+                        }
+
+                    </tr>
 
                 }
 
