@@ -11,7 +11,8 @@ iki textbox biri eser diğeri ortak çalıştığı kişiler
     @using (Html.BeginForm("AramaSayfasi", "Kullanici", FormMethod.Post))
     {
 
-        @Html.TextBox("AranacakArastirmaci", "", new { placeholder = "Aranacak Araştırmacı" })
+        @Html.TextBox("ArastirmaciAdi", "", new { placeholder = "Araştırmacı Adı" })
+        @Html.TextBox("ArastirmaciSoyadi", "", new { placeholder = "Araştırmacı Soyadı" })
         @Html.TextBox("AranacakEser", "", new { placeholder = "Aranacak Eser" })
         @Html.TextBox("YayinYili", "", new { placeholder = "Yayın Yılı" })
 
@@ -48,6 +49,7 @@ iki textbox biri eser diğeri ortak çalıştığı kişiler
             {
                 foreach (var i in Model)
                 {
+
         <tr>
             <td> @i.ArastirmaciID</td>
             <td>
@@ -62,6 +64,7 @@ iki textbox biri eser diğeri ortak çalıştığı kişiler
                 @Html.ActionLink(i.CalistigiKisiler, "GrafikArastirmaci", "Kullanici", new { ArastirmaciAdi = i.CalistigiKisiler }, new { target = "_blank" })
             </td>
         </tr>
+
                 }
 
             }
@@ -70,7 +73,7 @@ iki textbox biri eser diğeri ortak çalıştığı kişiler
 
 </div>
 
-<div class="tablo" id="yayinTablo">
-
+<div class="uyari">
+    <p>Arama yaparken küçük ve büyük harflere dikkat ediniz</p>
 </div>
 

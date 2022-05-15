@@ -21,13 +21,13 @@ namespace akademikArama.Controllers
 
         //POST
         [HttpPost]
-        public ActionResult AramaSayfasi(string? AranacakArastirmaci, string? AranacakEser, int? YayinYili)
+        public ActionResult AramaSayfasi(string? ArastirmaciAdi, string? ArastirmaciSoyadi, string? AranacakEser, int? YayinYili)
         {
             //arama işlemleri
             List<AramaSayfasiModel> modelList = new List<AramaSayfasiModel>();
             Neo4jDriverHelper helper = new Neo4jDriverHelper(MyConstants.Uri, MyConstants.UserName, MyConstants.Password);
 
-            List<AramaSayfasiModel> arastirmaciList = helper.FindArastirmaci(AranacakArastirmaci, AranacakEser, YayinYili);
+            List<AramaSayfasiModel> arastirmaciList = helper.FindArastirmaci(ArastirmaciAdi, ArastirmaciSoyadi, AranacakEser, YayinYili);
             foreach (var i in arastirmaciList)
             {
                 AramaSayfasiModel model = new AramaSayfasiModel();
