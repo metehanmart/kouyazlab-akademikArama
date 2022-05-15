@@ -138,11 +138,12 @@ namespace akademikArama.Services
 
             List<AramaSayfasiModel> list = new List<AramaSayfasiModel>();
             List<AramaSayfasiModel> listTmp = new List<AramaSayfasiModel>();
+            List<AramaSayfasiModel> listTmp2 = new List<AramaSayfasiModel>();
             var session = _driver.Session();
             var query = "";
-            bool eseriVarMi = false;
+            bool eseriVarMi = false, ortagiVarMi = false;
             // hiç eseri var mı yo mu kontrol
-            query = $"MATCH(a:ARASTIRMACI),(y:YAYIN) WHERE a.ArastirmaciAdi CONTAINS '{aranacakAd}' AND a.ArastirmaciSoyadi CONTAINS '{aranacakSoyad}' AND (a)-[:YAYINLADI]->(y) RETURN a";
+            query = $"MATCH(a:ARASTIRMACI),(y:YAYIN) WHERE a.ArastirmaciAdi CONTAINS '{aranacakAd}' AND a.ArastirmaciSoyadi CONTAINS '{aranacakSoyad}' AND (a)-[:ORTAKPROJE]->(y) RETURN a";
             try
             {
                 var readResults = session.ReadTransaction(tx =>
@@ -170,6 +171,49 @@ namespace akademikArama.Services
             }
             if (listTmp.Count > 0)
                 eseriVarMi = true;
+
+            //Ortağı var mı?
+            if (yayinYili == 0 || yayinYili == null)
+            {
+                query = $"MATCH(a:ARASTIRMACI),(y:YAYIN),(t:YAYINTURU) WHERE a.ArastirmaciAdi CONTAINS '{aranacakAd}' AND a.ArastirmaciSoyadi CONTAINS '{aranacakSoyad}' " +
+                    $"AND y.YayinAdi CONTAINS '{yayinAdi}' AND (a)-[:YAYINLADI]->(y) AND (y)-[:TURU]->(t) AND NOT (a)-[:ORTAKPROJE]->()  RETURN a,y,t;";
+            }
+            else
+            {
+                query = $"MATCH(a:ARASTIRMACI),(y:YAYIN),(t:YAYINTURU) WHERE a.ArastirmaciAdi CONTAINS '{aranacakAd}' AND a.ArastirmaciSoyadi CONTAINS '{aranacakSoyad}' " +
+                    $"AND y.YayinAdi CONTAINS '{yayinAdi}' AND y.YayinYili = {yayinYili} AND(a)-[:YAYINLADI]->(y) AND (y)-[:TURU]->(t) AND NOT (a)-[:ORTAKPROJE]->()  RETURN a,y,t;";
+            }
+            try
+            {
+                var readResults = session.ReadTransaction(tx =>
+                {
+                    var result = tx.Run(query, new { ArastirmaciAdi = aranacakAd });
+                    return (result.ToList());
+                });
+
+                foreach (var result in readResults)
+                {
+                    AramaSayfasiModel tmp = new AramaSayfasiModel();
+                    var Node = result["a"].As<INode>();
+                    var Node2 = result["y"].As<INode>();
+                    var Node4 = result["t"].As<INode>();
+                    tmp.ArastirmaciID = Node["ArastirmaciID"].As<Int32>();
+                    tmp.ArastirmaciAdi = Node["ArastirmaciAdi"].As<String>();
+                    tmp.ArasirmaciSoyadi = Node["ArastirmaciSoyadi"].As<String>();
+                    tmp.YayinAdi = Node2["YayinAdi"].As<String>();
+                    tmp.YayinYili = Node2["YayinYili"].As<Int32>();
+                    tmp.YayinTuru = Node4["YayinTuru"].As<String>();
+                    list.Add(tmp);
+                }
+            }
+            catch (Neo4jException ex)
+            {
+                Console.WriteLine($"{query} - {ex}");
+                throw;
+            }
+
+
+
 
             if (yayinYili == 0 || yayinYili == null)
             {
