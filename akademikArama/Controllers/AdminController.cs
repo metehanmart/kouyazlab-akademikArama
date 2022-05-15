@@ -29,6 +29,38 @@ namespace akademikArama.Controllers
         }
         [Authorize]
         [HttpPost]
+        public ActionResult SilmeSayfasi1(EklemeSayfasiModel silmeSayfasiModel)
+        {
+            List<EklemeSayfasiModel> modelList = new List<EklemeSayfasiModel>();
+            Neo4jDriverHelper neo4JDriverHelper = new Neo4jDriverHelper(MyConstants.Uri, MyConstants.UserName, MyConstants.Password);
+
+            neo4JDriverHelper.ArastirmaciSil(silmeSayfasiModel);
+
+
+            return RedirectToAction("EklemeSayfasi");
+        }
+        public ActionResult SilmeSayfasi2(EklemeSayfasiModel silmeSayfasiModel)
+        {
+            List<EklemeSayfasiModel> modelList = new List<EklemeSayfasiModel>();
+            Neo4jDriverHelper neo4JDriverHelper = new Neo4jDriverHelper(MyConstants.Uri, MyConstants.UserName, MyConstants.Password);
+
+            neo4JDriverHelper.YayinSil(silmeSayfasiModel);
+
+
+            return RedirectToAction("EklemeSayfasi");
+        }
+        public ActionResult SilmeSayfasi3(EklemeSayfasiModel silmeSayfasiModel)
+        {
+            List<EklemeSayfasiModel> modelList = new List<EklemeSayfasiModel>();
+            Neo4jDriverHelper neo4JDriverHelper = new Neo4jDriverHelper(MyConstants.Uri, MyConstants.UserName, MyConstants.Password);
+
+            neo4JDriverHelper.YayinTuruSil(silmeSayfasiModel);
+
+
+            return RedirectToAction("EklemeSayfasi");
+        }
+
+        [HttpPost]
         public ActionResult EklemeSayfasi(EklemeSayfasiModel eklemeSayfasiModel)
         {
             List<EklemeSayfasiModel> modelList = new List<EklemeSayfasiModel>();

@@ -274,7 +274,21 @@ namespace akademikArama.Services
             }
             return status;
         }
-
+        public void ArastirmaciSil(EklemeSayfasiModel eklemeSayfasiModel)
+        {
+            //Mete Query Yaz
+            System.Diagnostics.Debug.WriteLine("Gelen Arastırmacı ID: " + eklemeSayfasiModel.ArastirmaciID);
+        }
+        public void YayinSil(EklemeSayfasiModel eklemeSayfasiModel)
+        {
+            //Mete Query Yaz
+            System.Diagnostics.Debug.WriteLine("Gelen Yayın ID: " + eklemeSayfasiModel.YayinID);
+        }
+        public void YayinTuruSil(EklemeSayfasiModel eklemeSayfasiModel)
+        {
+            //Mete Query Yaz
+            System.Diagnostics.Debug.WriteLine("Gelen Yayın Turu ID: " + eklemeSayfasiModel.YayinTuruID);
+        }
         public void EserleArastirmaciyiBagla(EklemeSayfasiModel eklemeSayfasiModel)
         {
             // Burda turude baglamak lazım
