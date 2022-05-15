@@ -45,7 +45,7 @@
 
             if (queryString.charAt(0) == 'l')
                 configQuery = "MATCH(p:ARASTIRMACI) WHERE p.ArastirmaciAdi = '" + AranacakAd + "' AND p.ArastirmaciSoyadi= '" + AranacakSoyad + "' RETURN *;";
-            console.log(configQuery);
+            //console.log(configQuery);
             var config = {
                 container_id: "viz",
                 server_url: "bolt://3.231.33.56:7687",
