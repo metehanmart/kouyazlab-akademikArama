@@ -141,7 +141,7 @@ namespace akademikArama.Services
             List<AramaSayfasiModel> listTmp2 = new List<AramaSayfasiModel>();
             var session = _driver.Session();
             var query = "";
-            bool eseriVarMi = false, ortagiVarMi = false;
+            bool eseriVarMi = false;
             // hiç eseri var mı yo mu kontrol
             query = $"MATCH(a:ARASTIRMACI),(y:YAYIN) WHERE a.ArastirmaciAdi CONTAINS '{aranacakAd}' AND a.ArastirmaciSoyadi CONTAINS '{aranacakSoyad}' AND (a)-[:ORTAKPROJE]->(y) RETURN a";
             try
@@ -322,15 +322,66 @@ namespace akademikArama.Services
         {
             //Mete Query Yaz
             System.Diagnostics.Debug.WriteLine("Gelen Arastırmacı ID: " + eklemeSayfasiModel.ArastirmaciID);
+            string query = $"MATCH(a:ARASTIRMACI) WHERE a.ArastirmaciID = {eklemeSayfasiModel.ArastirmaciID}  DETACH DELETE a";
+            using (var session = _driver.Session())
+            {
+                try
+                {
+                    var ekle = session.WriteTransaction(tx =>
+                    {
+                        var result = tx.Run(query, new { eklemeSayfasiModel.ArastirmaciAdi });
+                        return result;
+                    });
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine("hata" + ex);
+                }
+
+            }
         }
         public void YayinSil(EklemeSayfasiModel eklemeSayfasiModel)
         {
             //Mete Query Yaz
             System.Diagnostics.Debug.WriteLine("Gelen Yayın ID: " + eklemeSayfasiModel.YayinID);
+            string query = $"MATCH(y:YAYIN) WHERE y.YayinID = {eklemeSayfasiModel.YayinID}  DETACH DELETE y";
+            using (var session = _driver.Session())
+            {
+                try
+                {
+                    var ekle = session.WriteTransaction(tx =>
+                    {
+                        var result = tx.Run(query, new { eklemeSayfasiModel.ArastirmaciAdi });
+                        return result;
+                    });
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine("hata" + ex);
+                }
+
+            }
         }
         public void YayinTuruSil(EklemeSayfasiModel eklemeSayfasiModel)
         {
             //Mete Query Yaz
+            string query = $"MATCH(t:YAYINTURU) WHERE t.YayinTuruID = {eklemeSayfasiModel.YayinTuruID}  DETACH DELETE t";
+            using (var session = _driver.Session())
+            {
+                try
+                {
+                    var ekle = session.WriteTransaction(tx =>
+                    {
+                        var result = tx.Run(query, new { eklemeSayfasiModel.ArastirmaciAdi });
+                        return result;
+                    });
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine("hata" + ex);
+                }
+
+            }
             System.Diagnostics.Debug.WriteLine("Gelen Yayın Turu ID: " + eklemeSayfasiModel.YayinTuruID);
         }
         public void EserleArastirmaciyiBagla(EklemeSayfasiModel eklemeSayfasiModel)
