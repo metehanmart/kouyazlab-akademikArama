@@ -133,49 +133,19 @@ namespace akademikArama.Services
             return list;
         }
 
-        public List<AramaSayfasiModel> FindArastirmaci(string aranacakAd, string yayinAdi, int? yayinYili)
+        public List<AramaSayfasiModel> FindArastirmaci(string aranacakAd, string aranacakSoyad, string yayinAdi, int? yayinYili)
         {
-            char[] isimArr = aranacakAd.ToCharArray();
-            bool soyisimGirildiMi = false;
-            for (int i = 0; i < aranacakAd.Length; i++)
-            {
-                if (isimArr[i] == ' ')
-                {
-                    soyisimGirildiMi = true;
-                }
-            }
-
-
-            string aranacakIsim = "", aranacakSoyisim = "";
-            if (soyisimGirildiMi == true)
-            {
-                string[] adsoyad = aranacakAd.Split(' ');
-                for (int i = 0; i < aranacakAd.Split(' ').Length - 1; i++)
-                {
-                    aranacakIsim += adsoyad[i] + " ";
-                }
-                //burada sıkıntı var bakmak lazım Alev yazdım hata verdi soyad olmayınca patlıyor
-                aranacakIsim = aranacakIsim.Substring(0, aranacakIsim.Length - 1);
-                aranacakSoyisim = adsoyad[aranacakAd.Split(' ').Length - 1];
-            }
-            else
-            {
-                aranacakIsim = aranacakAd;
-            }
-
 
             List<AramaSayfasiModel> list = new List<AramaSayfasiModel>();
             var query = "";
             if (yayinYili == 0 || yayinYili == null)
             {
-                query = $"MATCH(a:ARASTIRMACI),(y:YAYIN),(t:YAYINTURU),(b:ARASTIRMACI) WHERE a.ArastirmaciAdi CONTAINS '{aranacakIsim}' AND a.ArastirmaciSoyadi CONTAINS '{aranacakSoyisim}' OR  " +
-                    $"a.ArastirmaciSoyadi CONTAINS '{aranacakIsim}' AND " +
+                query = $"MATCH(a:ARASTIRMACI),(y:YAYIN),(t:YAYINTURU),(b:ARASTIRMACI) WHERE a.ArastirmaciAdi CONTAINS '{aranacakAd}' AND a.ArastirmaciSoyadi CONTAINS '{aranacakSoyad}' AND " +
                     $"y.YayinAdi CONTAINS '{yayinAdi}' AND (a)-[:YAYINLADI]->(y) AND (y)-[:TURU]->(t) AND (a)-[:ORTAKPROJE]->(b)-[:YAYINLADI]->(y)  RETURN a,y,t,b;";
             }
             else
             {
-                query = $"MATCH(a:ARASTIRMACI),(y:YAYIN),(t:YAYINTURU),(b:ARASTIRMACI) WHERE a.ArastirmaciAdi CONTAINS '{aranacakIsim}' AND a.ArastirmaciSoyadi CONTAINS '{aranacakSoyisim}' " +
-                    $"OR a.ArastirmaciSoyadi CONTAINS '{aranacakIsim}' AND " +
+                query = $"MATCH(a:ARASTIRMACI),(y:YAYIN),(t:YAYINTURU),(b:ARASTIRMACI) WHERE a.ArastirmaciAdi CONTAINS '{aranacakAd}' AND a.ArastirmaciSoyadi CONTAINS '{aranacakSoyad}' AND " +
                     $"y.YayinAdi CONTAINS '{yayinAdi}' AND y.YayinYili = {yayinYili} AND (a)-[:YAYINLADI]->(y) AND (y)-[:TURU]->(t) AND (a)-[:ORTAKPROJE]->(b)-[:YAYINLADI]->(y)  RETURN a,y,t,b;";
             }
             System.Diagnostics.Debug.WriteLine(query);
