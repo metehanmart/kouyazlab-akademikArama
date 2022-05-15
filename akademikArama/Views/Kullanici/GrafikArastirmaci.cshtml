@@ -6,7 +6,8 @@
 
 <html>
 <head>
-    <title> Hadee </title>
+    <title>Görüntüleme Sayfası </title>
+    <link rel="icon" type="image/x-icon" href="https://www.kvkk-egitimi.com/wp-content/uploads/kvkk-kisisel-veriler-hangi-sartlarda-silinmeli.png">
     <style type="text/css">
         #viz {
             width: 900px;
@@ -16,7 +17,7 @@
     <script src="~/Scripts/jquery-3.4.1.min.js"></script>
     <script src="https://cdn.neo4jlabs.com/neovis.js/v1.5.0/neovis.js"></script>
     <script>
-        
+
         function draw() {
             var queryString = window.location.search;
             //console.log();
@@ -29,7 +30,7 @@
                 AranacakAd = tumAd[0].substr(tumAd[0].indexOf('=') + 1, tumAd[0].length);
                 AranacakSoyad = tumAd[1].substr(tumAd[1].indexOf('=') + 1, tumAd[1].length);
                 AranacakAd = AranacakAd.replace("%20", " ");
-               
+
             }
             else {
                 tumAd = queryString.split('%');
@@ -62,7 +63,7 @@
                         //"caption": "ekmek"
                     }
                 },
-                initial_cypher: "MATCH(a: ARASTIRMACI)< -[r]-(p: ARASTIRMACI)-[r2]-> (y: YAYIN)-[r3]-> (t: YAYINTURU) WHERE p.ArastirmaciAdi = '" + AranacakAd + "' AND p.ArastirmaciSoyadi= '" + AranacakSoyad+"' RETURN *;"
+                initial_cypher: "MATCH(a: ARASTIRMACI)< -[r]-(p: ARASTIRMACI)-[r2]-> (y: YAYIN)-[r3]-> (t: YAYINTURU) WHERE p.ArastirmaciAdi = '" + AranacakAd + "' AND p.ArastirmaciSoyadi= '" + AranacakSoyad + "' RETURN *;"
                 //initial_cypher: "MATCH (n)-[r]->(m) RETURN *;"
             }
             var a = 0;
@@ -74,10 +75,10 @@
                     //console.log($('.vis-tooltip').text().replace(/\D/g, ''));
                     if ($('.vis-tooltip').text().replace(/\D/g, '') != '' && !$('.vis-tooltip').text().includes("YayinTuru") && !$('.vis-tooltip').text().includes("YayinYili"))
                         viz.renderWithCypher("MATCH(a: ARASTIRMACI)< -[r]-(p: ARASTIRMACI)-[r2]-> (y: YAYIN)-[r3]-> (t: YAYINTURU) WHERE p.ArastirmaciID= " + $('.vis-tooltip').text().replace(/\D/g, '') + " RETURN *");
-                }); 
+                });
             });
 
-            
+
         }
     </script>
 </head>
