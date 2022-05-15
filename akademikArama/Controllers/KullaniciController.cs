@@ -44,12 +44,7 @@ namespace akademikArama.Controllers
 
         }
 
-        public JsonResult Gecici()
-        {
-            string tmp = "hadele";
-            return Json(tmp, JsonRequestBehavior.AllowGet);
 
-        }
         public ActionResult GrafikArastirmaci()
         {
             return View();
