@@ -6,7 +6,8 @@
 
 <html>
 <head>
-    <title> Hadee </title>
+    <title>Görüntüleme Sayfası </title>
+    <link rel="icon" type="image/x-icon" href="https://www.kvkk-egitimi.com/wp-content/uploads/kvkk-kisisel-veriler-hangi-sartlarda-silinmeli.png">
     <style type="text/css">
         #viz {
             width: 900px;
@@ -19,29 +20,25 @@
     <script>
 
         function draw() {
-            const queryString = window.location.search;
+            var queryString = window.location.search;
             //console.log();
-            var AranacakID = queryString.substr(queryString.indexOf('=', queryString.length));
+            var tumAd;
+            var AranacakAd;
+            var AranacakSoyad;
+            if (queryString.includes('&')) {
+                queryString = queryString.substr(1, queryString.length);
+                tumAd = queryString.split('&');
+                AranacakAd = tumAd[0].substr(tumAd[0].indexOf('=') + 1, tumAd[0].length);
+                AranacakSoyad = tumAd[1].substr(tumAd[1].indexOf('=') + 1, tumAd[1].length);
+                AranacakAd = AranacakAd.replace("%20", " ");
 
-            //$(document).ready(function () {
-            //    var myJsvariable = '';
-            //    console.log("hadeee2 == " + myJsvariable);
-            //    $.ajax({
-            //        url: "/Kullanici/Gecici",
-            //        type: "POST",
-            //        dataType: "json",
-            //        data: myJsvariable,
-            //        success: function (mydata) {
-            //            let lastid = 0;
-            //            let indxChange = 0;
-            //            const obj = JSON.stringify(mydata);
-            //            console.log("obj == " + obj);
-
-            //        }
-            //    });
-            //});
-
-
+            }
+            else {
+                tumAd = queryString.split('%');
+                AranacakSoyad = tumAd[1].substr(2, tumAd[1].length);
+                AranacakAd = tumAd[0].substr(tumAd[0].indexOf('=') + 1, tumAd[0].length);
+            }
+            //console.log(AranacakAd + " " + AranacakSoyad);
 
             var config = {
                 container_id: "viz",
@@ -62,40 +59,30 @@
                     }
                 },
                 relationships: {
-                    "YAYINLANDI": {
-                        caption: false
+                    "YAYINLADI": {
+                        
                         //"caption": "ekmek"
                     }
                 },
 
-                initial_cypher: "MATCH(a: ARASTIRMACI)< -[r]-(p: ARASTIRMACI)-[r2]-> (y: YAYIN)-[r3]-> (t: YAYINTURU) WHERE p.ArastirmaciID = " + AranacakID + " RETURN *;"
+                initial_cypher: "MATCH(a: ARASTIRMACI)< -[r]-(p: ARASTIRMACI)-[r2]-> (y: YAYIN)-[r3]-> (t: YAYINTURU) WHERE p.ArastirmaciAdi = '" + AranacakAd + "' AND p.ArastirmaciSoyadi= '" + AranacakSoyad + "' RETURN *;"
                 //initial_cypher: "MATCH (n)-[r]->(m) RETURN *;"
-
             }
 
 
             var viz = new NeoVis.default(config);
             viz.render();
             viz.registerOnEvent("completed", (e) => {
-                // attach handlers when rendering is finished
 
-
-                viz["_network"].on("selectNode", (ev) => {
-                    //const tiklananNode = ev.nodes[0];
-                    //const node = viz['_nodes'][tiklananNode].raw;
-                    //console.log(node);
-
-
-                    console.log($('.vis-tooltip').text());
-
-                    //viz.renderWithCypher("MATCH(a: ARASTIRMACI)< -[r]-(p: ARASTIRMACI)-[r2]-> (y: YAYIN)-[r3]-> (t: YAYINTURU) WHERE p.ArastirmaciID= " + final + " RETURN *");
-
-
-
+                viz["_network"].on("selectNode", (event) => {
+                    //console.log($('.vis-tooltip').text().replace(/\D/g, ''));
+                    if ($('.vis-tooltip').text().replace(/\D/g, '') != '' && !$('.vis-tooltip').text().includes("YayinTuru") && !$('.vis-tooltip').text().includes("YayinYili"))
+                        viz.renderWithCypher("MATCH(a: ARASTIRMACI)< -[r]-(p: ARASTIRMACI)-[r2]-> (y: YAYIN)-[r3]-> (t: YAYINTURU) WHERE p.ArastirmaciID= " + $('.vis-tooltip').text().replace(/\D/g, '') + " RETURN *");
 
                 });
-
             });
+
+
         }
     </script>
 </head>

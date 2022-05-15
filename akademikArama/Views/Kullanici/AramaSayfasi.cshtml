@@ -1,11 +1,12 @@
 ﻿@model IEnumerable<akademikArama.Models.AramaSayfasiModel>
 @{
-    ViewBag.Title = "AramaSayfasi";
+    ViewBag.Title = "Arama Sayfası";
 }
 <!--
 iki textbox biri eser diğeri ortak çalıştığı kişiler
 -->
-<h2>AramaSayfasi</h2>
+
+<h2>Arama Sayfası</h2>
 <div class="ortala">
     @using (Html.BeginForm("AramaSayfasi", "Kullanici", FormMethod.Post))
     {
@@ -37,7 +38,7 @@ iki textbox biri eser diğeri ortak çalıştığı kişiler
         </thead>
 
         <tbody>
-            
+
             @if (Model.Count() == 0)
             {
                 <tr>
@@ -49,17 +50,20 @@ iki textbox biri eser diğeri ortak çalıştığı kişiler
                 foreach (var i in Model)
                 {
 
-                    <tr>
-                        <td> @i.ArastirmaciID</td>
-                        <td>
-                            @Html.ActionLink(i.ArastirmaciAdi, "GrafikArastirmaci", "Kullanici", new { i.ArastirmaciID}, new { target = "_blank" })
-                        </td>
-                        <td> @i.ArasirmaciSoyadi</td>
-                        <td> @i.YayinAdi</td>
-                        <td> @i.YayinYili</td>
-                        <td> @i.YayinTuru</td>
-                        <td> @i.CalistigiKisiler</td>
-                    </tr>
+        <tr>
+            <td> @i.ArastirmaciID</td>
+            <td>
+                @Html.ActionLink(i.ArastirmaciAdi, "GrafikArastirmaci", "Kullanici", new { ArastirmaciAdi = i.ArastirmaciAdi, ArastirmaciSoyadi = i.ArasirmaciSoyadi }, new { target = "_blank" })
+            </td>
+            <td> @i.ArasirmaciSoyadi</td>
+            <td> @i.YayinAdi</td>
+            <td> @i.YayinYili</td>
+            <td> @i.YayinTuru</td>
+            
+            <td>
+                @Html.ActionLink(i.CalistigiKisiler, "GrafikArastirmaci", "Kullanici", new { ArastirmaciAdi = i.CalistigiKisiler }, new { target = "_blank" })
+            </td>
+        </tr>
 
                 }
 
