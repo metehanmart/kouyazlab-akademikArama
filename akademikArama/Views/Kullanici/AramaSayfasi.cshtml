@@ -52,9 +52,19 @@ iki textbox biri eser diğeri ortak çalıştığı kişiler
 
                     <tr>
                         <td> @i.ArastirmaciID</td>
-                        <td>
-                            @Html.ActionLink(i.ArastirmaciAdi, "GrafikArastirmaci", "Kullanici", new { ArastirmaciAdi = i.ArastirmaciAdi, ArastirmaciSoyadi = i.ArasirmaciSoyadi }, new { target = "_blank" })
-                        </td>
+                        @if (@i.CalistigiKisiler != null)
+                        {
+                    <td onclick="myFunction(this)">
+                        @Html.ActionLink(i.ArastirmaciAdi, "GrafikArastirmaci", "Kullanici", new { ArastirmaciAdi = i.ArastirmaciAdi, ArastirmaciSoyadi = i.ArasirmaciSoyadi }, new { target = "_blank" })
+                   
+                    </td>
+                        }
+                        else
+                        {
+                            <td>
+                                @Html.ActionLink(i.ArastirmaciAdi, "GrafikArastirmaci", "Kullanici", new { lArastirmaciAdi = i.ArastirmaciAdi, ArastirmaciSoyadi = i.ArasirmaciSoyadi }, new { target = "_blank" })
+                            </td>
+                        }
                         <td> @i.ArasirmaciSoyadi</td>
                         <td> @i.YayinAdi</td>
                         <td> @i.YayinYili</td>
@@ -75,7 +85,11 @@ iki textbox biri eser diğeri ortak çalıştığı kişiler
     </table>
 
 </div>
-
+<script>
+    function myFunction(x) {
+        window.location.href = "http://www.w3schools.com";
+    }
+</script>
 <div class="uyari">
     <p>Arama yaparken küçük ve büyük harflere dikkat ediniz</p>
 </div>

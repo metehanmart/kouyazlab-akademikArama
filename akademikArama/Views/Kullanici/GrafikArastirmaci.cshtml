@@ -25,8 +25,9 @@
             var tumAd;
             var AranacakAd;
             var AranacakSoyad;
+            queryString = queryString.substr(1, queryString.length);
             if (queryString.includes('&')) {
-                queryString = queryString.substr(1, queryString.length);
+
                 tumAd = queryString.split('&');
                 AranacakAd = tumAd[0].substr(tumAd[0].indexOf('=') + 1, tumAd[0].length);
                 AranacakSoyad = tumAd[1].substr(tumAd[1].indexOf('=') + 1, tumAd[1].length);
@@ -34,12 +35,17 @@
 
             }
             else {
+
                 tumAd = queryString.split('%');
                 AranacakSoyad = tumAd[1].substr(2, tumAd[1].length);
                 AranacakAd = tumAd[0].substr(tumAd[0].indexOf('=') + 1, tumAd[0].length);
             }
-            console.log(AranacakAd + " " + AranacakSoyad);
+            var configQuery = "MATCH(a: ARASTIRMACI)< -[r]-(p: ARASTIRMACI)-[r2]-> (y: YAYIN)-[r3]-> (t: YAYINTURU) WHERE p.ArastirmaciAdi = '" + AranacakAd + "' AND p.ArastirmaciSoyadi= '" + AranacakSoyad + "' RETURN *";
+            //console.log(AranacakAd + " " + AranacakSoyad);
 
+            if (queryString.charAt(0) == 'l')
+                configQuery = "MATCH(p:ARASTIRMACI) WHERE p.ArastirmaciAdi = '" + AranacakAd + "' AND p.ArastirmaciSoyadi= '" + AranacakSoyad + "' RETURN *;";
+            console.log(configQuery);
             var config = {
                 container_id: "viz",
                 server_url: "bolt://3.231.33.56:7687",
@@ -60,12 +66,12 @@
                 },
                 relationships: {
                     "YAYINLADI": {
-                        
+
                         //"caption": "ekmek"
                     }
                 },
 
-                initial_cypher: "MATCH(a: ARASTIRMACI)< -[r]-(p: ARASTIRMACI)-[r2]-> (y: YAYIN)-[r3]-> (t: YAYINTURU) WHERE p.ArastirmaciAdi = '" + AranacakAd + "' AND p.ArastirmaciSoyadi= '" + AranacakSoyad + "' RETURN *;"
+                initial_cypher: configQuery
                 //initial_cypher: "MATCH (n)-[r]->(m) RETURN *;"
             }
 
